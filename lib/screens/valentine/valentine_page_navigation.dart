@@ -16,7 +16,7 @@ class ValentinePageNavigation extends StatefulWidget {
 class _ValentinePageNavigationState extends State<ValentinePageNavigation> {
 
   //page navigation
-  final List<Widget> _pages = [
+  final List<Widget> _pages = const [
     Valentine(),
     ValentineProfile(),
   ];
@@ -32,20 +32,22 @@ class _ValentinePageNavigationState extends State<ValentinePageNavigation> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: Theme.of(context).primaryColorLight,
         child: const Icon(
           Icons.add,
         ),
 
-        onPressed: (){},
+        onPressed: (){
+          //todo: add tasks
+        },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: AnimatedBottomNavigationBar(
+        backgroundColor: Theme.of(context).primaryColorDark,
         height: MediaQuery.of(context).size.height * 0.08,
-        activeColor: Colors.black,
-        inactiveColor: Colors.black,
         icons: const [
           FontAwesomeIcons.list,
           Icons.person_outlined,

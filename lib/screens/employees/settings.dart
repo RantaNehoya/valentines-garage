@@ -4,14 +4,14 @@ import 'package:avatar_glow/avatar_glow.dart';
 
 import 'package:valentines_garage/widgets/change_theme_button.dart';
 
-class ValentineProfile extends StatefulWidget {
-  const ValentineProfile({Key? key}) : super(key: key);
+class Settings extends StatefulWidget {
+  const Settings({Key? key}) : super(key: key);
 
   @override
-  State<ValentineProfile> createState() => _ValentineProfileState();
+  State<Settings> createState() => _SettingsState();
 }
 
-class _ValentineProfileState extends State<ValentineProfile> {
+class _SettingsState extends State<Settings> {
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +53,7 @@ class _ValentineProfileState extends State<ValentineProfile> {
 
               const Positioned(
                 bottom: 10.0,
-                child: Text('Valentine',
+                child: Text('John Doe',
                   style: TextStyle(
                     fontSize: 30,
                     fontWeight: FontWeight.bold,
@@ -63,43 +63,20 @@ class _ValentineProfileState extends State<ValentineProfile> {
             ],
           ),
 
-          GestureDetector(
-            child: const Padding(
-              padding: EdgeInsets.only(
-                top: 20.0,
-                bottom: 8.0,
-              ),
-              child: Text('Manage Staff',
-                style: TextStyle(
-                  fontSize: 20.0,
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.5,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: const <Widget>[
+                Text('Change Theme',
+                  style: TextStyle(
+                    fontSize: 15.0,
+                  ),
                 ),
-              ),
-            ),
-            onTap: (){
-              //todo: manage staff
-            },
-          ),
 
-          const Padding(
-            padding: EdgeInsets.symmetric(
-              vertical: 8.0,
+                ChangeThemeButton(),
+              ],
             ),
-            child: Divider(
-              thickness: 1.0,
-            ),
-          ),
-
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: const <Widget>[
-              Text('Change Theme',
-                style: TextStyle(
-                  fontSize: 15.0,
-                ),
-              ),
-
-              ChangeThemeButton(),
-            ],
           ),
         ],
       ),

@@ -48,7 +48,6 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xffed514e),
       body: Padding(
         padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.06),
         child: FlutterLogin(
