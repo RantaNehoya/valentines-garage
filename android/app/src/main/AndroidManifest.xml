@@ -1,7 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.map711s.valentines_garage">
+    <uses-permission android:name="android.permission.INTERNET"/>
    <application
-        android:label="valentines_garage"
+        android:label="Valentine's Garage"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
