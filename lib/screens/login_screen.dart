@@ -28,12 +28,12 @@ class LoginScreen extends StatelessWidget {
     });
   }
 
-  Future<String?> _signupUser(SignupData data) {
-    debugPrint('Signup Name: ${data.name}, Password: ${data.password}');
-    return Future.delayed(loginTime).then((_) {
-      return null;
-    });
-  }
+  // Future<String?> _signupUser(SignupData data) {
+  //   debugPrint('Signup Name: ${data.name}, Password: ${data.password}');
+  //   return Future.delayed(loginTime).then((_) {
+  //     return null;
+  //   });
+  // }
 
   Future<String?> _recoverPassword(String name) {
     debugPrint('Name: $name');
@@ -53,8 +53,20 @@ class LoginScreen extends StatelessWidget {
         child: FlutterLogin(
           title: 'Valentine\'s\nGarage',
           logo: const AssetImage('assets/images/mechanic.png'),
+          navigateBackAfterRecovery: true,
+          scrollable: true,
+
+          theme: LoginTheme(
+            titleStyle: const TextStyle(
+              fontFamily: 'Bungee',
+            ),
+          ),
+
+          //login
           onLogin: _authUser,
-          onSignup: _signupUser,
+
+          //sign up
+          // onSignup: _signupUser,
 
           onSubmitAnimationCompleted: () {
             Navigator.of(context).pushReplacement(MaterialPageRoute(
