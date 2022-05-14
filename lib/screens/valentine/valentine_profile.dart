@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'dart:io';
 
-import 'package:avatar_glow/avatar_glow.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:image_picker/image_picker.dart';
 
 import 'package:valentines_garage/widgets/change_theme_button.dart';
+import 'package:valentines_garage/utilities/shared_preferences.dart';
+import 'package:valentines_garage/widgets/widgets.dart';
 
 class ValentineProfile extends StatefulWidget {
   const ValentineProfile({Key? key}) : super(key: key);
@@ -14,95 +18,166 @@ class ValentineProfile extends StatefulWidget {
 class _ValentineProfileState extends State<ValentineProfile> {
 
   @override
+  void initState() {
+    super.initState();
+    _loadImage();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: <Widget>[
+    return SafeArea(
+      child: Scaffold(
+        body: Column(
+          children: <Widget>[
 
-          Stack(
-            alignment: Alignment.center,
-            children: <Widget>[
+            Stack(
+              alignment: Alignment.center,
+              children: <Widget>[
 
-              //profile background
-              Container(
-                color: Theme.of(context).primaryColorDark,
-                width: double.infinity,
-                height: MediaQuery.of(context).size.height * 0.25,
-              ),
-
-              //profile avatar
-              Padding(
-                padding: const EdgeInsets.only(
-                  top: 5.0,
-                  bottom: 40.0,
+                //profile background
+                profileBackground(
+                  ctx: context,
                 ),
 
-                child: AvatarGlow(
-                  glowColor: Theme.of(context).primaryColor,
-                  endRadius: 70.0,
+                //profile avatar
+                Stack(
+                  alignment: Alignment.center,
+                  children: <Widget>[
 
-                  child: CircleAvatar(
-                    backgroundColor: Colors.grey[100],
-                    radius: 50.0,
+                    profileAvatar(
+                      ctx: context,
+                      avatar: AvatarImage.imgPath.isEmpty ? const AssetImage('assets/images/unknown.png') : FileImage(File(AvatarImage.imgPath)) as ImageProvider,
+                    ),
 
-                    //todo: shared preferences
-                    foregroundImage: const AssetImage('assets/images/unknown.png'),
-                  ),
+                    editButton(
+                      ctx: context,
+                      galleryButton: imageButton(
+                        src: 'Image from Gallery',
+                        imageSource: _imageFromGallery,
+                        icon: Icons.photo,
+                      ),
+                      cameraButton: imageButton(
+                        src: 'Image from Gallery',
+                        imageSource: _imageFromCamera,
+                        icon: Icons.add_a_photo,
+                      ),
+                    ),
+                  ],
                 ),
-              ),
 
-              const Positioned(
-                bottom: 10.0,
-                child: Text('Valentine',
+                profileName(
+                  name: 'Valentine',
+                ),
+              ],
+            ),
+
+            GestureDetector(
+              child: const Padding(
+                padding: EdgeInsets.only(
+                  top: 20.0,
+                  bottom: 8.0,
+                ),
+                child: Text('Manage Staff',
                   style: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 20.0,
                   ),
                 ),
               ),
-            ],
-          ),
+              onTap: (){
+                //todo: manage staff
+              },
+            ),
 
-          GestureDetector(
-            child: const Padding(
-              padding: EdgeInsets.only(
-                top: 20.0,
-                bottom: 8.0,
+            const Padding(
+              padding: EdgeInsets.symmetric(
+                vertical: 8.0,
               ),
-              child: Text('Manage Staff',
-                style: TextStyle(
-                  fontSize: 20.0,
+              child: Divider(
+                thickness: 1.0,
+              ),
+            ),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: const <Widget>[
+                Text('Change Theme',
+                  style: TextStyle(
+                    fontSize: 15.0,
+                  ),
                 ),
-              ),
-            ),
-            onTap: (){
-              //todo: manage staff
-            },
-          ),
 
-          const Padding(
-            padding: EdgeInsets.symmetric(
-              vertical: 8.0,
+                ChangeThemeButton(),
+              ],
             ),
-            child: Divider(
-              thickness: 1.0,
-            ),
-          ),
-
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: const <Widget>[
-              Text('Change Theme',
-                style: TextStyle(
-                  fontSize: 15.0,
-                ),
-              ),
-
-              ChangeThemeButton(),
-            ],
-          ),
-        ],
+          ],
+        ),
       ),
     );
+  }
+
+  //retrieve image from gallery
+  Future _imageFromGallery() async {
+    AvatarImage.image = await ImagePicker().pickImage(source: ImageSource.gallery);
+
+    AvatarImage.saveImage = await SharedPreferences.getInstance();
+
+    if(AvatarImage.image != null){
+      setState(() {
+        AvatarImage.imageFile = AvatarImage.image as XFile;
+        Navigator.of(context).pop();
+      });
+    }
+
+    AvatarImage.saveImage.setString("imgPath", AvatarImage.imageFile.path);
+
+    print(
+      '''
+      *******************************************
+      PATH: ${AvatarImage.imageFile.path}
+      *******************************************
+      ''',
+    );
+
+    setState(() {
+      AvatarImage.imagePath = AvatarImage.saveImage.getString("imgPath") as String;
+    });
+  }
+
+  //retrieve image from camera
+  Future _imageFromCamera() async {
+    AvatarImage.image = await ImagePicker().pickImage(source: ImageSource.camera);
+
+    AvatarImage.saveImage = await SharedPreferences.getInstance();
+
+    if(AvatarImage.image != null){
+      setState(() {
+        AvatarImage.imageFile = AvatarImage.image as XFile;
+        Navigator.of(context).pop();
+      });
+    }
+
+    AvatarImage.saveImage.setString("imgPath", AvatarImage.imageFile.path);
+
+    print(
+      '''
+      *******************************************
+      PATH: ${AvatarImage.imageFile.path}
+      *******************************************
+      ''',
+    );
+
+    setState(() {
+      AvatarImage.imagePath = AvatarImage.saveImage.getString("imgPath") as String;
+    });
+  }
+
+
+  //load image on app startup
+  void _loadImage() async {
+    SharedPreferences saveImage = await SharedPreferences.getInstance();
+
+    setState(() {
+      AvatarImage.imgPath = saveImage.getString("imgPath") as String;
+    });
   }
 }

@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import 'package:valentines_garage/screens/login_screen.dart';
-import 'package:valentines_garage/screens/splash_screen.dart';
+import 'package:valentines_garage/screens/valentine/valentine_page_navigation.dart';
 import 'package:valentines_garage/utilities/app_theme.dart';
 
 void main() {
@@ -43,7 +43,7 @@ class _MyAppState extends State<MyApp> {
 
           debugShowCheckedModeBanner: false,
           home: const SafeArea(
-              child: LoginScreen()
+              child: ValentinePageNavigation()
           ),
         );
       },

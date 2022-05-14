@@ -47,34 +47,35 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.06),
-        child: FlutterLogin(
-          title: 'Valentine\'s\nGarage',
-          logo: const AssetImage('assets/images/mechanic.png'),
-          navigateBackAfterRecovery: true,
-          scrollable: true,
+    return SafeArea(
+      child: Scaffold(
+        body: Padding(
+          padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.06),
+          child: FlutterLogin(
+            title: 'Valentine\'s\nGarage',
+            logo: const AssetImage('assets/images/mechanic.png'),
+            navigateBackAfterRecovery: true,
+            scrollable: true,
 
-          theme: LoginTheme(
-            titleStyle: const TextStyle(
-              fontFamily: 'Bungee',
+            theme: LoginTheme(
+              titleStyle: const TextStyle(
+                fontFamily: 'Bungee',
+              ),
             ),
+
+            //login
+            onLogin: _authUser,
+
+            //sign up
+            // onSignup: _signupUser,
+
+            onSubmitAnimationCompleted: () {
+              Navigator.of(context).pushReplacement(MaterialPageRoute(
+                builder: (context) => const ValentinePageNavigation(),
+              ));
+            },
+            onRecoverPassword: _recoverPassword,
           ),
-
-          //login
-          onLogin: _authUser,
-
-          //sign up
-          // onSignup: _signupUser,
-
-          onSubmitAnimationCompleted: () {
-            Navigator.of(context).pushReplacement(MaterialPageRoute(
-              builder: (context) => const ValentinePageNavigation(),
-            ));
-          },
-
-          onRecoverPassword: _recoverPassword,
         ),
       ),
     );
