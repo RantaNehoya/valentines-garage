@@ -26,7 +26,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -36,15 +35,11 @@ class _MyAppState extends State<MyApp> {
 
         return MaterialApp(
           title: 'Valentine\'s Garage',
-
           themeMode: themeProvider.themeMode,
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
-
           debugShowCheckedModeBanner: false,
-          home: const SafeArea(
-              child: ValentinePageNavigation()
-          ),
+          home: const SafeArea(child: LoginScreen()),
         );
       },
     );

@@ -79,7 +79,7 @@ class _homePageState extends State<homePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               AppBar(
-                backgroundColor: Color(0xfff96060),
+                backgroundColor: Theme.of(context).primaryColorDark,
                 elevation: 0,
                 title: Text(
                   "Work List",
@@ -98,7 +98,7 @@ class _homePageState extends State<homePage> {
               ),
               Container(
                 height: 70,
-                color: Color(0xfff96060),
+                color: Theme.of(context).primaryColorDark,
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -178,11 +178,11 @@ class _homePageState extends State<homePage> {
                       ],
                     ),
                   ),
-                  // taskWidget(Color(0xfff96060), "Repair Trailer", "9:00 am"),
-                  // taskWidget(Colors.blue, "Wheel Alignment", "11:00 am"),
-                  // taskWidget(Colors.green, "Engine Check", "3:00 pm"),
+                  taskWidget(Color(0xfff96060), "Repair Trailer", "9:00 am"),
+                  taskWidget(Colors.blue, "Wheel Alignment", "11:00 am"),
+                  taskWidget(Colors.green, "Engine Check", "3:00 pm"),
                 ],
-              )))
+              ))),
             ],
           )
         ],
@@ -195,9 +195,69 @@ class _homePageState extends State<homePage> {
     setState(() {});
   }
 
-// Slidable taskWidget(Color color, String title, String time) {
-//   return Slidable(
-//     actionPane: SlidableDrawerActionPane(),
-//   );
-// }
+  Slidable taskWidget(Color color, String title, String time) {
+    return Slidable(
+      actionPane: SlidableDrawerActionPane(),
+      actionExtentRatio: 0.3,
+      child: Container(
+          height: 80,
+          margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          decoration: BoxDecoration(color: Colors.white, boxShadow: [
+            BoxShadow(
+                color: Colors.black.withOpacity(0.03),
+                offset: Offset(0, 9),
+                blurRadius: 20,
+                spreadRadius: 1)
+          ]),
+          child: Row(
+            children: [
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 20),
+                height: 25,
+                width: 25,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                    border: Border.all(color: color, width: 4)),
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    title,
+                    style: TextStyle(color: Colors.black, fontSize: 18),
+                  ),
+                  Text(
+                    time,
+                    style: TextStyle(color: Colors.grey, fontSize: 18),
+                  ),
+                ],
+              ),
+              Expanded(
+                child: Container(),
+              ),
+              Container(
+                height: 50,
+                width: 5,
+                color: color,
+              ),
+            ],
+          )),
+      secondaryActions: [
+        IconSlideAction(
+          caption: "Edit",
+          color: Colors.white,
+          icon: Icons.edit,
+          onTap: () {},
+        ),
+        IconSlideAction(
+          caption: "Delete",
+          color: color,
+          icon: Icons.edit,
+          onTap: () {},
+        )
+      ],
+    );
+  }
 }
