@@ -29,7 +29,8 @@ class _DepartmentState extends State<Department> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Department Page")),
+      appBar: AppBar(
+          backgroundColor: Color(0xFFF44336), title: Text("Department Page")),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [

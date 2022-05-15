@@ -32,7 +32,7 @@ class _newTaskState extends State<newTask> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.red.shade900,
+        backgroundColor: Color(0xFFF44336),
         elevation: 0,
         title: Text(
           "New Task",
@@ -40,8 +40,7 @@ class _newTaskState extends State<newTask> {
         ),
         leading: IconButton(
           onPressed: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => HomePage()));
+            backHome();
           },
           icon: Icon(Icons.arrow_back, color: Colors.white),
         ),
@@ -280,7 +279,7 @@ class _newTaskState extends State<newTask> {
                           borderRadius: BorderRadius.all(
                             Radius.circular(15),
                           ),
-                          color: Colors.red.shade900,
+                          color: Color(0xFFF44336),
                         ),
                         child: Center(
                             child: Text("Add Task",
@@ -313,5 +312,10 @@ class _newTaskState extends State<newTask> {
 
   void _openFile(PlatformFile file) {
     OpenFile.open(file.path);
+  }
+
+  backHome() {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => homePage()));
   }
 }

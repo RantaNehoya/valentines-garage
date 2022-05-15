@@ -30,7 +30,8 @@ class _ManagerState extends State<Manager> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Manager Page")),
+      appBar: AppBar(
+          backgroundColor: Color(0xFFF44336), title: Text("Manager Page")),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [

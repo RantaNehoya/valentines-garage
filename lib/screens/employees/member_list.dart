@@ -34,7 +34,8 @@ class _MembersState extends State<Members> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Member Page")),
+      appBar: AppBar(
+          backgroundColor: Color(0xFFF44336), title: Text("Member Page")),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [

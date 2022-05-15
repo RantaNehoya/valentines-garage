@@ -3,7 +3,6 @@ import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.da
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:valentines_garage/screens/valentine/valentine_homepage.dart';
 import 'package:valentines_garage/screens/valentine/valentine_profile.dart';
-import 'checklist.dart';
 import 'newtask.dart';
 
 class ValentinePageNavigation extends StatefulWidget {
@@ -39,25 +38,7 @@ class _ValentinePageNavigationState extends State<ValentinePageNavigation> {
           Icons.add,
         ),
         onPressed: () {
-          //todo: add tasks
-          showModalBottomSheet(
-              context: context,
-              builder: (context) {
-                return Wrap(
-                  children: [
-                    ListTile(
-                      onTap: openNewTask,
-                      leading: Icon(Icons.add_task),
-                      title: Text('Add Task'),
-                    ),
-                    ListTile(
-                      onTap: openNewChecklist,
-                      leading: Icon(Icons.assignment_turned_in_outlined),
-                      title: Text('Add Checklist'),
-                    ),
-                  ],
-                );
-              });
+          openNewTask();
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -81,10 +62,5 @@ class _ValentinePageNavigationState extends State<ValentinePageNavigation> {
 
   openNewTask() {
     Navigator.push(context, MaterialPageRoute(builder: (context) => NewTask()));
-  }
-
-  openNewChecklist() {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => CheckList()));
   }
 }
