@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:valentines_garage/screens/valentine/valentine_homepage.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:valentines_garage/screens/employees/member_list.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:open_file/open_file.dart';
+import '../../utilities/department_list.dart';
+import 'manager_list.dart';
 
 class NewTask extends StatelessWidget {
   const NewTask({Key? key}) : super(key: key);
@@ -27,7 +32,7 @@ class _newTaskState extends State<newTask> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Theme.of(context).primaryColorDark,
+        backgroundColor: Colors.red.shade900,
         elevation: 0,
         title: Text(
           "New Task",
@@ -45,10 +50,6 @@ class _newTaskState extends State<newTask> {
         height: MediaQuery.of(context).size.height,
         child: Stack(
           children: [
-            Container(
-              height: 10,
-              color: Theme.of(context).primaryColorDark,
-            ),
             Container(
               margin: EdgeInsets.symmetric(horizontal: 30),
               decoration: BoxDecoration(
@@ -75,11 +76,20 @@ class _newTaskState extends State<newTask> {
                             borderRadius: BorderRadius.all(Radius.circular(20)),
                             color: Colors.grey.withOpacity(0.2),
                           ),
-                          child: Text(
-                            "Asignee",
-                            style: TextStyle(
-                              fontSize: 18,
+                          child: TextButton(
+                            child: Text('Assigned by'),
+                            style: TextButton.styleFrom(
+                              primary: Color(0xfff96060),
+                              backgroundColor: Colors.transparent,
+                              onSurface: Color(0xfff96060),
                             ),
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Manager()));
+                              ;
+                            },
                           ),
                         ),
                         SizedBox(
@@ -95,11 +105,20 @@ class _newTaskState extends State<newTask> {
                             borderRadius: BorderRadius.all(Radius.circular(20)),
                             color: Colors.grey.withOpacity(0.2),
                           ),
-                          child: Text(
-                            "Project",
-                            style: TextStyle(
-                              fontSize: 18,
+                          child: TextButton(
+                            child: Text('Department'),
+                            style: TextButton.styleFrom(
+                              primary: Color(0xfff96060),
+                              backgroundColor: Colors.transparent,
+                              onSurface: Colors.teal,
                             ),
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Department()));
+                              ;
+                            },
                           ),
                         ),
                       ],
@@ -120,7 +139,7 @@ class _newTaskState extends State<newTask> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 160),
+              padding: const EdgeInsets.only(top: 180, left: 10, right: 10),
               child: Container(
                 padding: EdgeInsets.all(15),
                 child: Column(
@@ -151,7 +170,7 @@ class _newTaskState extends State<newTask> {
                           maxLines: 6,
                           decoration: InputDecoration(
                             border: InputBorder.none,
-                            hintText: "Add description here",
+                            hintText: "   Add description here",
                           ),
                           style: TextStyle(
                             fontSize: 18,
@@ -177,7 +196,9 @@ class _newTaskState extends State<newTask> {
                               child: IconButton(
                                 icon:
                                     Icon(Icons.attach_file, color: Colors.grey),
-                                onPressed: () {},
+                                onPressed: () {
+                                  _pickFile();
+                                },
                               ),
                             ),
                           ],
@@ -208,7 +229,7 @@ class _newTaskState extends State<newTask> {
                           },
                           child: Text(
                             'Due Date',
-                            style: TextStyle(color: Colors.blue),
+                            style: TextStyle(color: Color(0xfff96060)),
                           ),
                         ),
                       ),
@@ -223,18 +244,32 @@ class _newTaskState extends State<newTask> {
                         height: 20,
                       ),
                       Container(
-                        padding: EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                          color: Colors.grey.withOpacity(0.2),
-                        ),
-                        child: Text(
-                          "Managers",
-                          style: TextStyle(
-                            fontSize: 18,
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                            color: Colors.grey.withOpacity(0.2),
                           ),
-                        ),
-                      ),
+                          // child: Text(
+                          //   "Members",
+                          //   style: TextStyle(
+                          //     fontSize: 18,
+                          //   ),
+                          // ),
+                          child: TextButton(
+                            child: Text('Members'),
+                            style: TextButton.styleFrom(
+                              primary: Color(0xfff96060),
+                              backgroundColor: Colors.transparent,
+                              onSurface: Colors.teal,
+                            ),
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Members()));
+                              ;
+                            },
+                          )),
                       SizedBox(
                         height: 20,
                       ),
@@ -245,7 +280,7 @@ class _newTaskState extends State<newTask> {
                           borderRadius: BorderRadius.all(
                             Radius.circular(15),
                           ),
-                          color: Theme.of(context).primaryColorDark,
+                          color: Colors.red.shade900,
                         ),
                         child: Center(
                             child: Text("Add Task",
@@ -259,5 +294,24 @@ class _newTaskState extends State<newTask> {
         ),
       ),
     );
+  }
+
+  void _pickFile() async {
+    // opens storage to pick files and the picked file or files
+    // are assigned into result and if no file is chosen result is null.
+    // you can also toggle "allowMultiple" true or false depending on your need
+    final result = await FilePicker.platform.pickFiles(allowMultiple: false);
+
+    // if no file is picked
+    if (result == null) return;
+
+    // we get the file from result object
+    final file = result.files.first;
+
+    _openFile(file);
+  }
+
+  void _openFile(PlatformFile file) {
+    OpenFile.open(file.path);
   }
 }
