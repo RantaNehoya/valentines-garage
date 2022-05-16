@@ -30,22 +30,24 @@ class _EmployeePageNavigationState extends State<EmployeePageNavigation> {
   Widget build(BuildContext context) {
     final isLight = Provider.of<ThemeProvider>(context).themeMode == ThemeMode.light ? Colors.white : Theme.of(context).primaryColorDark;
 
-    return Scaffold(
-      bottomNavigationBar: FancyBottomNavigation(
-        barBackgroundColor: isLight,
-        tabs: [
-          TabData(iconData: FontAwesomeIcons.list, title: 'Tasks'),
-          TabData(iconData: Icons.settings_outlined, title: 'Settings'),
-        ],
-        onTabChangedListener: (position) {
-          setState(() {
-            _activeIndex = position;
-          });
-        },
-      ),
+    return SafeArea(
+      child: Scaffold(
+        bottomNavigationBar: FancyBottomNavigation(
+          barBackgroundColor: isLight,
+          tabs: [
+            TabData(iconData: FontAwesomeIcons.list, title: 'Tasks'),
+            TabData(iconData: Icons.settings_outlined, title: 'Settings'),
+          ],
+          onTabChangedListener: (position) {
+            setState(() {
+              _activeIndex = position;
+            });
+          },
+        ),
 
-      //page bodies
-      body: _pages.elementAt(_activeIndex),
+        //page bodies
+        body: _pages.elementAt(_activeIndex),
+      ),
     );
   }
 }

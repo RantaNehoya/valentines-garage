@@ -2,12 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:provider/provider.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 import 'package:valentines_garage/screens/login_screen.dart';
-import 'package:valentines_garage/screens/valentine/valentine_page_navigation.dart';
+import 'package:valentines_garage/screens/valentine/valentine_profile.dart';
 import 'package:valentines_garage/utilities/app_theme.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
   //only allow portrait orientation
   SystemChrome.setPreferredOrientations(
     [
@@ -42,9 +46,7 @@ class _MyAppState extends State<MyApp> {
           darkTheme: AppTheme.darkTheme,
 
           debugShowCheckedModeBanner: false,
-          home: const SafeArea(
-              child: ValentinePageNavigation()
-          ),
+          home: ValentineProfile(),
         );
       },
     );
