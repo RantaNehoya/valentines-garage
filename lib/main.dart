@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 import 'package:valentines_garage/screens/login_screen.dart';
-import 'package:valentines_garage/screens/valentine/valentine_profile.dart';
 import 'package:valentines_garage/utilities/app_theme.dart';
 
 void main() async {
@@ -46,7 +45,7 @@ class _MyAppState extends State<MyApp> {
           darkTheme: AppTheme.darkTheme,
 
           debugShowCheckedModeBanner: false,
-          home: ValentineProfile(),
+          home: LoginScreen(),
         );
       },
     );
