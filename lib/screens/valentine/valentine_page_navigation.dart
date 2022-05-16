@@ -19,7 +19,7 @@ class _ValentinePageNavigationState extends State<ValentinePageNavigation> {
   //page navigation
   final List<Widget> _pages = const [
     homePage(),
-    ValentineProfile(),
+    const ValentineProfile(),
   ];
 
   //handler to change active index
