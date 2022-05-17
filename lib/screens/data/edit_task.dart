@@ -9,15 +9,17 @@ import '../../utilities/department_list.dart';
 import 'package:valentines_garage/screens/data/task_data.dart';
 import 'package:valentines_garage/screens/data/task_view.dart';
 
-class newTask extends StatefulWidget {
+class editTask extends StatefulWidget {
   @override
-  newTaskState createState() {
-    return new newTaskState();
+  editTaskState createState() {
+    return new editTaskState();
   }
 }
 
-class newTaskState extends State<newTask> {
+class editTaskState extends State<editTask> {
+  //at index of TaskData
   final data = TaskData("", "", [], "", []);
+  //at index of taskData
   final titleController = TextEditingController();
   final descController = TextEditingController();
 
@@ -58,7 +60,7 @@ class newTaskState extends State<newTask> {
                         height: 25,
                       ),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Container(
                             padding: EdgeInsets.all(10),
@@ -84,9 +86,6 @@ class newTaskState extends State<newTask> {
                               },
                             ),
                           ),
-                          Container(
-                            child: Text("Department: ${data.department}"),
-                          ),
                         ],
                       ),
                       SizedBox(
@@ -102,7 +101,9 @@ class newTaskState extends State<newTask> {
                               ),
                             ),
                             onSubmitted: (title) {
-                              data.title = title;
+                              setState(() {
+                                data.title = title;
+                              });
                             },
                             style: TextStyle(fontSize: 18)),
                       )
@@ -150,7 +151,9 @@ class newTaskState extends State<newTask> {
                                 fontSize: 18,
                               ),
                               onSubmitted: (description) {
-                                data.description = description;
+                                setState(() {
+                                  data.description = description;
+                                });
                               },
                             ),
                           ),
@@ -201,7 +204,9 @@ class newTaskState extends State<newTask> {
                                 print('change $date');
                               }, onConfirm: (date) {
                                 String setDate = "$date";
-                                data.date = setDate;
+                                setState(() {
+                                  data.date = setDate;
+                                });
                               },
                                   currentTime: DateTime.now(),
                                   locale: LocaleType.en);
@@ -222,36 +227,33 @@ class newTaskState extends State<newTask> {
                         SizedBox(
                           height: 20,
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Container(
-                              padding: EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(20)),
-                                color: Colors.grey.withOpacity(0.2),
-                              ),
-                              child: TextButton(
-                                child: Text('Members'),
-                                style: TextButton.styleFrom(
-                                  primary: Color(0xfff96060),
-                                  backgroundColor: Colors.transparent,
-                                  onSurface: Colors.teal,
-                                ),
-                                onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => Members()));
-                                  ;
-                                },
-                              ),
+                        Container(
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                            color: Colors.grey.withOpacity(0.2),
+                          ),
+                          // child: Text(
+                          //   "Members",
+                          //   style: TextStyle(
+                          //     fontSize: 18,
+                          //   ),
+                          // ),
+                          child: TextButton(
+                            child: Text('Members'),
+                            style: TextButton.styleFrom(
+                              primary: Color(0xfff96060),
+                              backgroundColor: Colors.transparent,
+                              onSurface: Colors.teal,
                             ),
-                            Container(
-                              child: Text("Members: ${data.added_members}"),
-                            )
-                          ],
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Members()));
+                              ;
+                            },
+                          ),
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
@@ -325,20 +327,22 @@ class newTaskState extends State<newTask> {
                             color: Color(0xFFF44336),
                           ),
                           child: TextButton(
-                            child: Text('Add Task'),
+                            child: Text('Update Task'),
                             style: TextButton.styleFrom(
                               primary: Colors.white,
                               backgroundColor: Colors.transparent,
                             ),
                             onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => SecondPage(
-                                    data: data,
-                                  ),
-                                ),
-                              );
+                              //update TaskData at that index
+
+                              // Navigator.push(
+                              //   context,
+                              //   MaterialPageRoute(
+                              //     builder: (context) => homePage(
+                              //       data: data,
+                              //     ),
+                              //   ),
+                              // );
                               ;
                             },
                           ),

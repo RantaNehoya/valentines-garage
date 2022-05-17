@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:valentines_garage/screens/data/task_data.dart';
+import '../data/task_view.dart';
+import '../valentine/newtask.dart';
 
 class MemberApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -20,7 +23,8 @@ class Members extends StatefulWidget {
 }
 
 class _MembersState extends State<Members> {
-  List data = [
+  final data = TaskData("", "", [], "", []);
+  List members = [
     'Christopher',
     'Felix',
     'Changbin',
@@ -30,7 +34,7 @@ class _MembersState extends State<Members> {
     'Seungmin',
     'I.N'
   ];
-  List selectedItemsList = [];
+  List selectedItemsList_Members = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,7 +53,9 @@ class _MembersState extends State<Members> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
             child: Wrap(children: [
-              for (var item = 0; item < selectedItemsList.length; item++)
+              for (var item = 0;
+                  item < selectedItemsList_Members.length;
+                  item++)
                 Container(
                   margin: EdgeInsets.only(right: 8, top: 8),
                   padding: EdgeInsets.only(right: 4),
@@ -72,7 +78,7 @@ class _MembersState extends State<Members> {
                             size: 20,
                           )),
                       SizedBox(width: 4),
-                      Text(selectedItemsList[item].toString()),
+                      Text(selectedItemsList_Members[item].toString()),
                       SizedBox(width: 4),
                       InkWell(
                           child: Icon(
@@ -82,7 +88,8 @@ class _MembersState extends State<Members> {
                           ),
                           onTap: () {
                             setState(() {
-                              selectedItemsList.remove(selectedItemsList[item]);
+                              selectedItemsList_Members
+                                  .remove(selectedItemsList_Members[item]);
                             });
                           })
                     ],
@@ -98,15 +105,16 @@ class _MembersState extends State<Members> {
           SizedBox(height: 16),
           Expanded(
             child: ListView.builder(
-                itemCount: data.length,
+                itemCount: members.length,
                 itemBuilder: (context, index) {
                   return ListTile(
-                    onTap: () => selectTappedItem(index),
-                    title: Text('${data[index]}',
+                    onTap: () => selectTappedItem_Members(index),
+                    title: Text('${members[index]}',
                         style: Theme.of(context).textTheme.bodyText1),
                     leading: Container(
                       padding: EdgeInsets.all(8),
-                      decoration: selectedItemsList.contains(data[index])
+                      decoration: selectedItemsList_Members
+                              .contains(members[index])
                           ? BoxDecoration(
                               shape: BoxShape.circle,
                               color: Theme.of(context)
@@ -117,29 +125,55 @@ class _MembersState extends State<Members> {
                               color: Theme.of(context)
                                   .accentColor
                                   .withOpacity(0.3)),
-                      child: !selectedItemsList.contains(data[index])
+                      child: !selectedItemsList_Members.contains(members[index])
                           ? Icon(Icons.account_circle)
                           : Icon(Icons.check, color: Colors.white),
                     ),
                   );
                 }),
           ),
+          Container(
+            padding: EdgeInsets.symmetric(vertical: 15),
+            width: double.infinity,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(
+                Radius.circular(15),
+              ),
+              color: Color(0xFFF44336),
+            ),
+            child: TextButton(
+              child: Text('Add Members'),
+              style: TextButton.styleFrom(
+                primary: Colors.white,
+                backgroundColor: Colors.transparent,
+              ),
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => newTask()));
+                // Navigator.push(context,
+                //     MaterialPageRoute(builder: (context) => SecondPage(data: data,)));
+                data.added_members = List.from(selectedItemsList_Members);
+              },
+            ),
+          )
         ],
       ),
     );
   }
 
-  void selectTappedItem(int index) {
-    if (selectedItemsList.contains(data[index])) {
+  void selectTappedItem_Members(int index) {
+    if (selectedItemsList_Members.contains(members[index])) {
       setState(() {
-        selectedItemsList.remove(data[index]);
+        selectedItemsList_Members.remove(members[index]);
       });
-      print(selectedItemsList);
+      print(selectedItemsList_Members);
     } else {
       setState(() {
-        selectedItemsList.add(data[index]);
+        selectedItemsList_Members.add(members[index]);
       });
-      print(selectedItemsList);
+      print(selectedItemsList_Members);
     }
   }
 }
+
+//       data.added_members = List.from(selectedItemsList);
