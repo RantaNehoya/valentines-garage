@@ -5,7 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:valentines_garage/screens/valentine/valentine_homepage.dart';
 import 'package:valentines_garage/screens/valentine/valentine_profile.dart';
-import 'newtask.dart';
+import '../newtask.dart';
 
 class ValentinePageNavigation extends StatefulWidget {
   const ValentinePageNavigation({Key? key}) : super(key: key);

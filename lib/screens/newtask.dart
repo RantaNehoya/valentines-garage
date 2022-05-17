@@ -7,8 +7,8 @@ import 'package:open_file/open_file.dart';
 import 'package:valentines_garage/screens/valentine/valentine_homepage.dart';
 import 'package:valentines_garage/screens/employees/member_list.dart';
 import 'package:valentines_garage/screens/valentine/valentine_page_navigation.dart';
-import '../../utilities/department_list.dart';
-import 'manager_list.dart';
+import '../utilities/department_list.dart';
+import 'valentine/manager_list.dart';
 
 class NewTask extends StatelessWidget {
   const NewTask({Key? key}) : super(key: key);

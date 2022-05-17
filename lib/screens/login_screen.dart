@@ -6,13 +6,26 @@ import 'package:flutter_login/flutter_login.dart';
 import 'package:valentines_garage/screens/valentine/valentine_page_navigation.dart';
 import 'package:valentines_garage/screens/employees/employee_page_navigation.dart';
 
+import 'managers/manager_navigation.dart';
+
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({Key? key}) : super(key: key);
 
   Duration get loginTime => const Duration(milliseconds: 2250);
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  final _valentineUID = 'KCpacq7f0CM6bkvBJr3DbxmHn5I2';
+  final _valentineUID = 'zXs0A1f7GjXNdoZg0sVBK0blobF2';
+  final _managerUID = <String>[
+    'WbOuvz7js0TGl0pBmm3vOW0UB9E2',
+    'CfYdglZO6fc1OBqGsHIUzOCi5Kk1',
+  ];
+
+
+
+  //valentine123
+  //sun123
+  //joha123
+  //john123
 
   //user auth sign in
   Future<String?> _authUser(LoginData data) async {
@@ -99,7 +112,19 @@ class LoginScreen extends StatelessWidget {
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(
                 //if valentine send to manager page else employee page
-                builder: (context) => _userUID() == _valentineUID ? const ValentinePageNavigation() : const EmployeePageNavigation(),
+                builder: (context) {
+                  if (_userUID() == _valentineUID){
+                    return const ValentinePageNavigation();
+                  }
+
+                  else if (_managerUID.contains(_userUID())){
+                    return const ManagerPageNavigation();
+                  }
+
+                  else{
+                    return const EmployeePageNavigation();
+                  }
+                },
               ),
             );
           },
