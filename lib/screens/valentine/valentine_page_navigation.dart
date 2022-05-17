@@ -19,7 +19,7 @@ class _ValentinePageNavigationState extends State<ValentinePageNavigation> {
   //page navigation
   final List<Widget> _pages = const [
     homePage(),
-    const ValentineProfile(),
+    ValentineProfile(),
   ];
 
   //handler to change active index
@@ -39,6 +39,8 @@ class _ValentinePageNavigationState extends State<ValentinePageNavigation> {
         child: const Icon(
           Icons.add,
         ),
+
+        //add task
         onPressed: () {
           openNewTask();
         },
@@ -63,6 +65,6 @@ class _ValentinePageNavigationState extends State<ValentinePageNavigation> {
   }
 
   openNewTask() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => NewTask()));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => newTask()));
   }
 }

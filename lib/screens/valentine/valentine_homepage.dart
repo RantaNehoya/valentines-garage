@@ -29,10 +29,12 @@
 //     );
 //   }
 // }
-import 'newtask.dart';
 import 'package:flutter/material.dart';
+
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+
+import 'newtask.dart';
 
 class HomePage extends StatelessWidget {
   @override
