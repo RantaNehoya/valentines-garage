@@ -3,18 +3,6 @@ import '../screens/data/task_view.dart';
 import '../screens/valentine/newtask.dart';
 import 'package:valentines_garage/screens/data/task_data.dart';
 
-class DepartmentApp extends StatelessWidget {
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Select Members',
-      debugShowCheckedModeBanner: false,
-      home: Department(),
-    );
-  }
-}
-
 class Department extends StatefulWidget {
   const Department({Key? key}) : super(key: key);
 
@@ -34,7 +22,7 @@ class _DepartmentState extends State<Department> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          backgroundColor: Color(0xFFF44336), title: Text("Department Page")),
+          backgroundColor: Theme.of(context).primaryColor, title: Text("Department Page")),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [

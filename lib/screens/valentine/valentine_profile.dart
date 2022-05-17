@@ -9,6 +9,8 @@ import 'package:valentines_garage/widgets/widgets.dart';
 import 'package:valentines_garage/widgets/constants.dart';
 import 'package:valentines_garage/utilities/auth.dart';
 import 'package:valentines_garage/screens/login_screen.dart';
+import 'package:valentines_garage/utilities/pdf_report.dart';
+import 'package:valentines_garage/test_screen.dart';
 
 class ValentineProfile extends StatefulWidget {
   const ValentineProfile({Key? key}) : super(key: key);
@@ -37,6 +39,7 @@ class _ValentineProfileState extends State<ValentineProfile> {
   String _newUserPassword = '';
 
   String _imagePath = '';
+  String _name = '';
 
   //controllers
   final TextEditingController _emailController = TextEditingController();
@@ -64,6 +67,8 @@ class _ValentineProfileState extends State<ValentineProfile> {
 
   @override
   Widget build(BuildContext context) {
+    _name = _auth.getDisplayName();
+
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
@@ -78,7 +83,6 @@ class _ValentineProfileState extends State<ValentineProfile> {
                   child: const ChangeThemeButtonIcon(),
                 ),
 
-                //todo: picture
                 //profile avatar
                 avatarPicture: profileAvatar(
                   ctx: context,
@@ -105,7 +109,7 @@ class _ValentineProfileState extends State<ValentineProfile> {
 
                 profileName: profileName(
                   ctx: context,
-                  name: _auth.getDisplayName(),
+                  name: _name,
                 ),
               ),
 
@@ -113,7 +117,6 @@ class _ValentineProfileState extends State<ValentineProfile> {
                 height: MediaQuery.of(context).size.height * 0.02,
               ),
 
-              //todo: name
               //change name
               settingPageManagement(
                 ctx: context,
@@ -355,6 +358,30 @@ class _ValentineProfileState extends State<ValentineProfile> {
                       );
                     },
                   );
+                },
+              ),
+              kDivider,
+
+              //generate report
+              GestureDetector(
+                child: const SizedBox(
+                  width: double.infinity,
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      top: 10.0,
+                      bottom: 8.0,
+                    ),
+                    child:  Text(
+                      'Generate report',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 15.0,
+                      ),
+                    ),
+                  ),
+                ),
+                onTap: () async {
+                  createPDF(ctx: context, tasks: Tiles.tasks);
                 },
               ),
               kDivider,

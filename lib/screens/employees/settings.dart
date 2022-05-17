@@ -22,7 +22,7 @@ class _SettingsState extends State<Settings> {
   @override
   void initState() {
     _loadImage();
-    _auth.getDisplayName();
+    _name = _auth.getDisplayName();
     super.initState();
   }
 
@@ -33,6 +33,7 @@ class _SettingsState extends State<Settings> {
   //auth
   final Authentication _auth = Authentication();
   String _imagePath = '';
+  String _name = '';
 
   //controllers
   final TextEditingController _emailController = TextEditingController();
@@ -60,6 +61,8 @@ class _SettingsState extends State<Settings> {
 
   @override
   Widget build(BuildContext context) {
+
+
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
@@ -101,7 +104,7 @@ class _SettingsState extends State<Settings> {
 
                 profileName: profileName(
                   ctx: context,
-                  name: _auth.getDisplayName(),
+                  name: _name,
                 ),
               ),
 
@@ -138,6 +141,14 @@ class _SettingsState extends State<Settings> {
                       if(_changeNameKey.currentState!.validate()){
                         _auth.updateDisplayName(_nameController.text);
                         _nameController.clear();
+                        setState(() {
+                          _name = _auth.getDisplayName();
+                          print('''
+                          **********************************************
+                          $_name
+                          **********************************************
+                          ''');
+                        });
                         Navigator.of(context).pop();
                       }
                     },

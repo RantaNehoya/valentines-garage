@@ -29,11 +29,20 @@
 //     );
 //   }
 // }
-import '../../widgets/checklist.dart';
 import 'newtask.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+
+class HomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: homePage(),
+    );
+  }
+}
 
 class homePage extends StatefulWidget {
   const homePage({Key? key}) : super(key: key);
@@ -195,23 +204,10 @@ class _homePageState extends State<homePage> {
                       ],
                     ),
                   ),
-
                   //todo
-                  // taskWidget(
-                  //   Color(0xfff96060),
-                  //   "Repair Trailer",
-                  //   "9:00 am",
-                  // ),
-                  // taskWidget(
-                  //   Colors.blue,
-                  //   "Wheel Alignment",
-                  //   "11:00 am",
-                  // ),
-                  // taskWidget(
-                  //   Colors.green,
-                  //   "Engine Check",
-                  //   "3:00 pm",
-                  // ),
+                  // taskWidget(Color(0xfff96060), "Repair Trailer", "9:00 am",),
+                  // taskWidget(Colors.blue, "Wheel Alignment", "11:00 am",),
+                  // taskWidget(Colors.green, "Engine Check", "3:00 pm",),
                 ],
               ))),
             ],
@@ -226,78 +222,78 @@ class _homePageState extends State<homePage> {
     setState(() {});
   }
 
-  // Slidable taskWidget(Color color, String title, String time) {
-  //   return Slidable(
-  //     actionPane: SlidableDrawerActionPane(),
-  //     actionExtentRatio: 0.3,
-  //     child: Container(
-  //         height: 80,
-  //         margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-  //         decoration: BoxDecoration(color: Colors.white, boxShadow: [
-  //           BoxShadow(
-  //               color: Colors.black.withOpacity(0.03),
-  //               offset: Offset(0, 9),
-  //               blurRadius: 20,
-  //               spreadRadius: 1)
-  //         ]),
-  //         child: Row(
-  //           children: [
-  //             Container(
-  //               margin: EdgeInsets.symmetric(horizontal: 20),
-  //               height: 25,
-  //               width: 25,
-  //               decoration: BoxDecoration(
-  //                   color: Colors.white,
-  //                   shape: BoxShape.circle,
-  //                   border: Border.all(color: color, width: 4)),
-  //             ),
-  //             Column(
-  //               crossAxisAlignment: CrossAxisAlignment.start,
-  //               mainAxisAlignment: MainAxisAlignment.center,
-  //               children: [
-  //                 Text(
-  //                   title,
-  //                   style: TextStyle(color: Colors.black, fontSize: 18),
-  //                 ),
-  //                 Text(
-  //                   time,
-  //                   style: TextStyle(color: Colors.grey, fontSize: 18),
-  //                 ),
-  //               ],
-  //             ),
-  //             Expanded(
-  //               child: Container(),
-  //             ),
-  //             Container(
-  //               height: 50,
-  //               width: 5,
-  //               color: color,
-  //             ),
-  //           ],
-  //         )),
-  //     secondaryActions: [
-  //       IconSlideAction(
-  //         caption: "Edit",
-  //         color: Colors.white,
-  //         icon: Icons.edit,
-  //         onTap: () {
-  //           openNewTask();
-  //         },
-  //       ),
-  //       IconSlideAction(
-  //         caption: "Delete",
-  //         color: color,
-  //         icon: Icons.delete,
-  //         onTap: () {
-  //           //remove
-  //           setState(() {});
-  //         },
-  //       )
-  //     ],
-  //   );
-  // }
+  Slidable taskWidget(Color color, String title, String time) {
+    return Slidable(
+      actionPane: SlidableDrawerActionPane(),
+      actionExtentRatio: 0.3,
+      child: Container(
+          height: 80,
+          margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          decoration: BoxDecoration(color: Colors.white, boxShadow: [
+            BoxShadow(
+                color: Colors.black.withOpacity(0.03),
+                offset: Offset(0, 9),
+                blurRadius: 20,
+                spreadRadius: 1)
+          ]),
+          child: Row(
+            children: [
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 20),
+                height: 25,
+                width: 25,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                    border: Border.all(color: color, width: 4)),
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    title,
+                    style: TextStyle(color: Colors.black, fontSize: 18),
+                  ),
+                  Text(
+                    time,
+                    style: TextStyle(color: Colors.grey, fontSize: 18),
+                  ),
+                ],
+              ),
+              Expanded(
+                child: Container(),
+              ),
+              Container(
+                height: 50,
+                width: 5,
+                color: color,
+              ),
+            ],
+          )),
+      secondaryActions: [
+        IconSlideAction(
+          caption: "Edit",
+          color: Colors.white,
+          icon: Icons.edit,
+          onTap: () {
+            openNewTask();
+          },
+        ),
+        IconSlideAction(
+          caption: "Delete",
+          color: color,
+          icon: Icons.delete,
+          onTap: () {
+            //remove
+            setState(() {});
+          },
+        )
+      ],
+    );
+  }
 
   openNewTask() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => newTask()));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => NewTask()));
   }
 }

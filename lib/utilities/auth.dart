@@ -51,7 +51,7 @@ class Authentication {
 
   //get display name
   String getDisplayName() {
-    return _firebaseAuth.currentUser!.displayName as String;
+    return _firebaseAuth.currentUser!.displayName.toString();
   }
 
   //update display name
@@ -66,7 +66,7 @@ class Authentication {
 
   //get profile picture
   String getProfilePicture() {
-    return _firebaseAuth.currentUser!.photoURL as String;
+    return _firebaseAuth.currentUser!.photoURL.toString();
   }
 
   //update email address

@@ -73,40 +73,37 @@ class LoginScreen extends StatelessWidget {
 
     return SafeArea(
       child: Scaffold(
-        body: Padding(
-          padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.06),
-          child: FlutterLogin(
-            title: 'Valentine\'s\nGarage',
-            logo: const AssetImage('assets/images/mechanic.png'),
-            navigateBackAfterRecovery: true,
-            scrollable: true,
-            messages: LoginMessages(
-              recoverPasswordDescription: 'We will send an email to this email address',
-              recoverPasswordSuccess: 'Email successfully sent',
-            ),
-
-            theme: LoginTheme(
-              titleStyle: const TextStyle(
-                fontFamily: 'Bungee',
-              ),
-            ),
-
-            //login
-            onLogin: _authUser,
-
-            //sign up
-            // onSignup: _signupUser,
-
-            onSubmitAnimationCompleted: () {
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(
-                  //if valentine send to manager page else employee page
-                  builder: (context) => _userUID() == _valentineUID ? const ValentinePageNavigation() : const EmployeePageNavigation(),
-                ),
-              );
-            },
-            onRecoverPassword: _recoverPassword,
+        body: FlutterLogin(
+          title: 'Valentine\'s\nGarage',
+          logo: const AssetImage('assets/images/mechanic.png'),
+          navigateBackAfterRecovery: true,
+          scrollable: true,
+          messages: LoginMessages(
+            recoverPasswordDescription: 'We will send an email to this email address',
+            recoverPasswordSuccess: 'Email successfully sent',
           ),
+
+          theme: LoginTheme(
+            titleStyle: const TextStyle(
+              fontFamily: 'Bungee',
+            ),
+          ),
+
+          //login
+          onLogin: _authUser,
+
+          //sign up
+          // onSignup: _signupUser,
+
+          onSubmitAnimationCompleted: () {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                //if valentine send to manager page else employee page
+                builder: (context) => _userUID() == _valentineUID ? const ValentinePageNavigation() : const EmployeePageNavigation(),
+              ),
+            );
+          },
+          onRecoverPassword: _recoverPassword,
         ),
       ),
     );
