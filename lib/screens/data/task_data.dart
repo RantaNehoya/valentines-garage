@@ -1,17 +1,14 @@
 class TaskData {
   String title;
   String description;
-  List department;
   String date;
-  List added_members;
-
-  TaskData(this.title, this.description, this.department, this.date,
-      this.added_members);
+  String priority;
+  TaskData(this.title, this.description, this.date, this.priority);
 }
 
 List<TaskData> tasklist = [
-  TaskData("ben 10", "has an omnitrix", ["plumber"], "its hero time",
-      ["gwen tennyson", "max tennyson"]),
+  TaskData("ben 10", "has an omnitrix", "its hero time",
+      "high"),
 ];
 // void main() {
 //   runApp(
