@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
-import '../newtask.dart';
+import '../valentine/new_task.dart';
 
 class ManagerHome extends StatefulWidget {
   const ManagerHome({Key? key}) : super(key: key);
@@ -255,6 +255,6 @@ class _ManagerHomeState extends State<ManagerHome> {
   }
 
   openNewTask() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => NewTask()));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => newTask()));
   }
 }

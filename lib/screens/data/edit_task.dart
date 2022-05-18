@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:valentines_garage/screens/valentine/valentine_page_navigation.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
-import 'package:valentines_garage/screens/employees/member_list.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:open_file/open_file.dart';
-import '../../utilities/department_list.dart';
 import 'package:valentines_garage/screens/data/task_data.dart';
 import 'package:valentines_garage/screens/data/task_view.dart';
 
@@ -18,7 +16,7 @@ class editTask extends StatefulWidget {
 
 class editTaskState extends State<editTask> {
   //at index of TaskData
-  final data = TaskData("", "", [], "", []);
+  final data = TaskData("", "", "", '');
   //at index of taskData
   final titleController = TextEditingController();
   final descController = TextEditingController();
@@ -78,10 +76,10 @@ class editTaskState extends State<editTask> {
                                 backgroundColor: Colors.transparent,
                               ),
                               onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => Department()));
+                                // Navigator.push(
+                                //     context,
+                                //     MaterialPageRoute(
+                                //         builder: (context) => Department()));
                                 ;
                               },
                             ),
@@ -247,11 +245,11 @@ class editTaskState extends State<editTask> {
                               onSurface: Colors.teal,
                             ),
                             onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Members()));
-                              ;
+                              // Navigator.push(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //         builder: (context) => Members()));
+                              // ;
                             },
                           ),
                         ),

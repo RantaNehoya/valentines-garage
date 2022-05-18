@@ -3,15 +3,19 @@ import 'package:intl/intl.dart';
 import 'package:valentines_garage/screens/valentine/valentine_homepage.dart';
 import 'package:valentines_garage/screens/data/task_data.dart';
 
-class SecondPage extends StatelessWidget {
-  final TaskData data;
+import '../../widgets/checklist.dart';
+import '../valentine/valentine_page_navigation.dart';
 
-  SecondPage({required this.data});
+class SecondPage extends StatelessWidget {
+  const SecondPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
+    final routeArgs = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xfff96060),
+        backgroundColor: Theme.of(context).primaryColor,
         title: Text("Task View"),
       ),
       body: Container(
@@ -24,21 +28,21 @@ class SecondPage extends StatelessWidget {
               padding: EdgeInsets.all(12.0),
             ),
             Text(
-              "Title: ${data.title}",
+              "Title: ${routeArgs['title']}",
               style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
               textAlign: TextAlign.start,
             ),
-            Text("Description: ${data.description}",
+            Text("Description: ${routeArgs['desc']}",
                 style: TextStyle(fontSize: 20)),
             SizedBox(
               height: 15,
             ),
-            Text("Department: ${data.department}",
-                style: TextStyle(fontSize: 20)),
+            // Text("Department: ${data.department}",
+            //     style: TextStyle(fontSize: 20)),
             SizedBox(
               height: 15,
             ),
-            Text("Date: ${data.date}",
+            Text("Date: ${routeArgs['date']}",
                 style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.normal,
@@ -46,8 +50,8 @@ class SecondPage extends StatelessWidget {
             SizedBox(
               height: 15,
             ),
-            Text("Members: ${data.added_members}",
-                style: TextStyle(fontSize: 20)),
+            // Text("Members: ${data.added_members}",
+            //     style: TextStyle(fontSize: 20)),
             SizedBox(
               height: 15,
             ),
@@ -58,7 +62,7 @@ class SecondPage extends StatelessWidget {
                 borderRadius: BorderRadius.all(
                   Radius.circular(15),
                 ),
-                color: Color(0xFFF44336),
+                color: Theme.of(context).primaryColor,
               ),
               child: TextButton(
                 child: Text('SAVE'),
@@ -68,10 +72,18 @@ class SecondPage extends StatelessWidget {
                 ),
                 onPressed: () {
                   //add to tasklist
-                  tasklist.add(TaskData('${data.title}', '${data.description}',
-                      data.department, '${data.date}', data.added_members));
+                  // tasklist.add(TaskData('${data.title}', '${data.description}',
+                  //     data.department, '${data.date}', data.added_members));
+                  homePage.task_list.add(
+                    Checklist(
+                      title: routeArgs['title'],
+                      date: routeArgs['date'],
+                      description: routeArgs['desc'],
+                      priority: routeArgs['priority'],
+                    ),
+                  );
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => homePage()));
+                      MaterialPageRoute(builder: (context) => ValentinePageNavigation()));
                 },
               ),
             ),

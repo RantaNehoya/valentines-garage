@@ -1,18 +1,21 @@
+
+
+
 class TaskData {
   String title;
   String description;
-  List department;
   String date;
-  List added_members;
+  String priority;
 
-  TaskData(this.title, this.description, this.department, this.date,
-      this.added_members);
+  TaskData(this.title, this.description, this.date,
+      this.priority);
+
+  // List<TaskData> tasklist = [
+  //   TaskData("ben 10", "has an omnitrix", ["plumber"], "its hero time",
+  //       ["gwen tennyson", "max tennyson"]),
+  // ];
 }
 
-List<TaskData> tasklist = [
-  TaskData("ben 10", "has an omnitrix", ["plumber"], "its hero time",
-      ["gwen tennyson", "max tennyson"]),
-];
 // void main() {
 //   runApp(
 //     MaterialApp(

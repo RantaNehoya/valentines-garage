@@ -8,6 +8,8 @@ import 'package:path_provider/path_provider.dart';
 
 import 'package:valentines_garage/test_screen.dart';
 
+import '../screens/valentine/valentine_homepage.dart';
+
 class GenerateReport extends StatelessWidget {
   const GenerateReport({Key? key}) : super(key: key);
 
@@ -73,10 +75,10 @@ Future<void> createPDF ({required BuildContext ctx, required List tasks}) async 
                   child: pw.Text('Tasks'),
                 ),
 
-                ...(List.generate(
-                    Tiles.tasks.length, (index){
-                      return Tiles.tasks[index];
-                })),
+                // ...(List.generate(
+                //     homePage.task_list.length, (index){
+                //       return homePage.task_list[index];
+                // })),
               ],
             ),
 
