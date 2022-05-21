@@ -157,10 +157,22 @@ Positioned companyPosition ({required BuildContext ctx, required String position
   );
 }
 
-TextFormField textFormInput ({bool autofcs=false, bool obscureTxt=false, TextInputType? keyboard, FocusNode? focusNode, void Function(String)? onSub, required String label, required TextEditingController controller}){
+TextFormField textFormInput ({bool autofcs=false, TextInputType? keyboard, FocusNode? focusNode, void Function(String)? onSub, required BuildContext ctx, required String label, required TextEditingController controller}){
   return TextFormField(
+    cursorColor: Theme.of(ctx).primaryColorDark,
+    textCapitalization: TextCapitalization.words,
     decoration: InputDecoration(
       labelText: label,
+      labelStyle: TextStyle(
+        color: Theme.of(ctx).primaryColorLight,
+        fontSize: 12,
+      ),
+      focusedBorder: UnderlineInputBorder(
+        borderSide: BorderSide(
+          color: Theme.of(ctx).primaryColorDark,
+          width: 2.0,
+        ),
+      ),
     ),
     controller: controller,
     focusNode: focusNode,
@@ -171,7 +183,6 @@ TextFormField textFormInput ({bool autofcs=false, bool obscureTxt=false, TextInp
       return null;
     },
     keyboardType: keyboard,
-    obscureText: obscureTxt,
     autofocus: autofcs,
     onFieldSubmitted: onSub,
   );
@@ -212,5 +223,3 @@ GestureDetector settingPageManagement ({List<Widget>? actions, Text? head, requi
     },
   );
 }
-
-

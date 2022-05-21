@@ -50,7 +50,7 @@ class LoginScreen extends StatelessWidget {
     return null;
   }
 
-  //user auth log in
+  //user auth sign up
   // Future<String?> _signupUser(SignupData data) {
   //   debugPrint('Signup Name: ${data.name}, Password: ${data.password}');
   //   return Future.delayed(loginTime).then((_) {
@@ -91,12 +91,17 @@ class LoginScreen extends StatelessWidget {
           logo: const AssetImage('assets/images/mechanic.png'),
           navigateBackAfterRecovery: true,
           scrollable: true,
+
           messages: LoginMessages(
             recoverPasswordDescription: 'We will send an email to this email address',
             recoverPasswordSuccess: 'Email successfully sent',
           ),
 
           theme: LoginTheme(
+            primaryColor: Theme.of(context).primaryColor,
+            pageColorLight: Theme.of(context).primaryColor,
+            pageColorDark: Theme.of(context).primaryColorDark,
+
             titleStyle: const TextStyle(
               fontFamily: 'Bungee',
             ),

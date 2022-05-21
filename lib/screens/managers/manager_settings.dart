@@ -10,7 +10,6 @@ import 'package:valentines_garage/widgets/constants.dart';
 import 'package:valentines_garage/utilities/auth.dart';
 import 'package:valentines_garage/screens/login_screen.dart';
 import 'package:valentines_garage/utilities/pdf_report.dart';
-import 'package:valentines_garage/test_screen.dart';
 
 class ManagerProfile extends StatefulWidget {
   const ManagerProfile({Key? key}) : super(key: key);
@@ -255,7 +254,7 @@ class _ManagerProfileState extends State<ManagerProfile> {
                   ),
                 ),
                 onTap: () async {
-                  createPDF(ctx: context, tasks: Tiles.tasks);
+                  createPDF(ctx: context);
                 },
               ),
               kDivider,

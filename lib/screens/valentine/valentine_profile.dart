@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:valentines_garage/widgets/change_theme_button.dart';
 import 'package:valentines_garage/widgets/widgets.dart';
@@ -10,7 +11,6 @@ import 'package:valentines_garage/widgets/constants.dart';
 import 'package:valentines_garage/utilities/auth.dart';
 import 'package:valentines_garage/screens/login_screen.dart';
 import 'package:valentines_garage/utilities/pdf_report.dart';
-import 'package:valentines_garage/test_screen.dart';
 
 class ValentineProfile extends StatefulWidget {
   const ValentineProfile({Key? key}) : super(key: key);
@@ -21,25 +21,14 @@ class ValentineProfile extends StatefulWidget {
 
 class _ValentineProfileState extends State<ValentineProfile> {
 
-  @override
-  void initState() {
-    _loadImage();
-    _auth.getDisplayName();
-    super.initState();
-  }
-
-  //keys
-  final _addAccountKey = GlobalKey<FormState>();
-  final _changeNameKey = GlobalKey<FormState>();
-
-  //auth
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final Authentication _auth = Authentication();
-  String _newUserName = '';
-  String _newUserEmail = '';
-  String _newUserPassword = '';
 
   String _imagePath = '';
   String _name = '';
+  bool _isManager = false;
+
+
 
   //controllers
   final TextEditingController _emailController = TextEditingController();
@@ -47,27 +36,21 @@ class _ValentineProfileState extends State<ValentineProfile> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _newPasswordController = TextEditingController();
 
-  //focus nodes
-  final FocusNode _emailFocusNode = FocusNode();
-  final FocusNode _passwordFocusNode = FocusNode();
+  //keys
+  final _changeNameKey = GlobalKey<FormState>();
 
   @override
-  void dispose() {
-    //dispose controllers
-    _emailController.dispose();
-    _passwordController.dispose();
-    _nameController.dispose();
-    _newPasswordController.dispose();
-
-    //dispose focus nodes
-    _emailFocusNode.dispose();
-    _passwordFocusNode.dispose();
-    super.dispose();
+  void initState() {
+    _loadImage();
+    _firebaseAuth.currentUser!.displayName.toString();
+    super.initState();
   }
+
+
 
   @override
   Widget build(BuildContext context) {
-    _name = _auth.getDisplayName();
+    // _name = _firebaseAuth.currentUser!.displayName.toString();
 
     return SafeArea(
       child: Scaffold(
@@ -109,7 +92,7 @@ class _ValentineProfileState extends State<ValentineProfile> {
 
                 profileName: profileName(
                   ctx: context,
-                  name: _name,
+                  name: _firebaseAuth.currentUser!.displayName.toString(),
                 ),
               ),
 
@@ -143,9 +126,11 @@ class _ValentineProfileState extends State<ValentineProfile> {
 
                     onFieldSubmitted: (_){
                       if(_changeNameKey.currentState!.validate()){
-                        _auth.updateDisplayName(_nameController.text);
-                        _nameController.clear();
-                        Navigator.of(context).pop();
+                        setState(() {
+                          _firebaseAuth.currentUser!.updateDisplayName(_nameController.text);
+                          _nameController.clear();
+                          Navigator.of(context).pop();
+                        });
                       }
                     },
                   ),
@@ -263,97 +248,41 @@ class _ValentineProfileState extends State<ValentineProfile> {
                     context: context,
                     builder: (context){
                       return SingleChildScrollView(
-                        child: AlertDialog(
-                          title: const Text(
-                            'Add new user',
-                            textAlign: TextAlign.center,
-                          ),
-                          elevation: 2.0,
-                          content: Form(
-                            key: _addAccountKey,
-                            child: Column(
-                              children: <Widget>[
+                        child: AccountDialog(
+                          isManager: _isManager,
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
+              kDivider,
 
-                                textFormInput(
-                                  controller: _nameController,
-                                  label: 'Name and Surname',
-                                  autofcs: true,
-                                  onSub: (_){
-                                    setState(() {
-                                      FocusScope.of(context).requestFocus(_emailFocusNode);
-                                    });
-                                  },
-                                ),
-
-                                textFormInput(
-                                  controller: _emailController,
-                                  label: 'Email Address',
-                                  focusNode: _emailFocusNode,
-                                  keyboard: TextInputType.emailAddress,
-                                  onSub: (_){
-                                    setState(() {
-                                      FocusScope.of(context).requestFocus(_passwordFocusNode);
-                                    });
-                                  },
-                                ),
-
-                                textFormInput(
-                                  controller: _passwordController,
-                                  label: 'Password',
-                                  focusNode: _passwordFocusNode,
-                                  obscureTxt: true,
-                                  onSub: (_){
-                                    setState(() {
-                                      FocusScope.of(context).unfocus();
-                                    });
-                                  },
-                                ),
-
-                                //button
-                                Padding(
-                                  padding: const EdgeInsets.all(30.0),
-                                  child: SizedBox(
-                                    width: double.infinity,
-                                    child: OutlinedButton(
-                                      child: const Padding(
-                                        padding: EdgeInsets.all(10.0),
-                                        child: Text('Create User'),
-                                      ),
-                                      onPressed: () {
-                                        if(_addAccountKey.currentState!.validate()){
-                                          setState(() async {
-                                            _newUserName = _nameController.text;
-                                            _newUserEmail = _emailController.text;
-                                            _newUserPassword = _passwordController.text;
-
-                                            String msg = await _auth.createUser(
-                                              ctx: context,
-                                              email: _newUserEmail,
-                                              password: _newUserPassword,
-                                              name: _newUserName,
-                                            );
-
-                                            ScaffoldMessenger.of(context).showSnackBar(
-                                              SnackBar(
-                                                duration: const Duration(seconds: 2),
-                                                content: Text(msg),
-                                                behavior: SnackBarBehavior.floating,
-                                              ),
-                                            );
-
-                                            _nameController.clear();
-                                            _emailController.clear();
-                                            _passwordController.clear();
-                                            Navigator.of(context).pop();
-                                          });
-                                        }
-                                      },
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
+              //view staff members
+              GestureDetector(
+                child: const SizedBox(
+                  width: double.infinity,
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      top: 10.0,
+                      bottom: 8.0,
+                    ),
+                    child:  Text(
+                      'View Staff',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 15.0,
+                      ),
+                    ),
+                  ),
+                ),
+                onTap: (){
+                  showDialog(
+                    context: context,
+                    builder: (context){
+                      return SingleChildScrollView(
+                        child: AccountDialog(
+                          isManager: _isManager,
                         ),
                       );
                     },
@@ -381,7 +310,7 @@ class _ValentineProfileState extends State<ValentineProfile> {
                   ),
                 ),
                 onTap: () async {
-                  createPDF(ctx: context, tasks: Tiles.tasks);
+                  createPDF(ctx: context);
                 },
               ),
               kDivider,
@@ -463,3 +392,257 @@ class _ValentineProfileState extends State<ValentineProfile> {
     });
   }
 }
+
+class AccountDialog extends StatefulWidget {
+  AccountDialog({Key? key, required this.isManager}) : super(key: key);
+  bool isManager;
+  List<Map<String, dynamic>> departments = [
+    {
+      'department': 'Electrical',
+      'isSelected': false,
+    },
+    {
+      'department': 'Mechanical',
+      'isSelected': false,
+    },
+    {
+      'department': 'SumnElse',
+      'isSelected': false
+    },
+  ];
+
+  @override
+  State<AccountDialog> createState() => _AccountDialogState();
+}
+
+class _AccountDialogState extends State<AccountDialog> {
+
+  //keys
+  final _addAccountKey = GlobalKey<FormState>();
+
+  //auth
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final Authentication _auth = Authentication();
+  String _newUserName = '';
+  String _newUserEmail = '';
+  String _newUserPassword = '';
+
+
+
+  String staffDepartment = '';
+
+  //controllers
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _newPasswordController = TextEditingController();
+
+  bool _isObscure = true;
+  bool _isSelected = false;
+
+  //focus nodes
+  final FocusNode _emailFocusNode = FocusNode();
+  final FocusNode _passwordFocusNode = FocusNode();
+  final FocusNode _nameFocusNode = FocusNode();
+
+
+  @override
+  void dispose() {
+    //dispose controllers
+    _emailController.dispose();
+    _passwordController.dispose();
+    _nameController.dispose();
+    _newPasswordController.dispose();
+
+    //dispose focus nodes
+    _emailFocusNode.dispose();
+    _passwordFocusNode.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text(
+        'Add new user',
+        textAlign: TextAlign.center,
+      ),
+      elevation: 2.0,
+      content: Form(
+        key: _addAccountKey,
+        child: Column(
+          children: <Widget>[
+
+            textFormInput(
+              ctx: context,
+              controller: _nameController,
+              label: 'Name and Surname',
+              autofcs: true,
+              onSub: (_){
+                setState(() {
+                  FocusScope.of(context).requestFocus(_emailFocusNode);
+                });
+              },
+            ),
+
+            textFormInput(
+              ctx: context,
+              controller: _emailController,
+              label: 'Email Address',
+              focusNode: _emailFocusNode,
+              keyboard: TextInputType.emailAddress,
+              onSub: (_){
+                setState(() {
+                  FocusScope.of(context).requestFocus(_passwordFocusNode);
+                });
+              },
+            ),
+
+
+            TextFormField(
+              cursorColor: Theme.of(context).primaryColorDark,
+              controller: _passwordController,
+              focusNode: _passwordFocusNode,
+              obscureText: _isObscure,
+              validator: (input){
+                if(input == null || input.isEmpty) {
+                  return 'Cannot leave field empty';
+                }
+                return null;
+              },
+
+              decoration: InputDecoration(
+                labelText: 'Password',
+                labelStyle: TextStyle(
+                  color: Theme.of(context).primaryColorLight,
+                  fontSize: 12,
+                ),
+
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Theme.of(context).primaryColorDark,
+                    width: 2.0,
+                  ),
+                ),
+
+                suffixIcon: IconButton(
+                  icon: _isObscure ? const Icon(Icons.visibility_outlined) : const Icon(Icons.visibility_off_outlined),
+                  color: Theme.of(context).primaryColorDark,
+
+                  onPressed: (){
+                    setState(() {
+                      _isObscure = _isObscure ? _isObscure = false : _isObscure = true;
+                    });
+                  },
+                ),
+              ),
+
+              onFieldSubmitted: (_){
+                setState(() {
+                  FocusScope.of(context).unfocus();
+                });
+              },
+            ),
+
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+
+              child: Row(
+                children: List.generate(
+                  widget.departments.length, (index){
+                  return Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: ChoiceChip(
+                      label: Text('${widget.departments[index]['department']}'),
+                      selected: widget.departments[index]['isSelected'],
+                      backgroundColor: Theme.of(context).primaryColorLight,
+                      selectedColor: Theme.of(context).primaryColorDark,
+
+                      onSelected: (selected){
+                        setState(() {
+                          for (int i=0; i<widget.departments.length; i++){
+                            widget.departments[i]['isSelected'] = false;
+                          }
+                          widget.departments[index]['isSelected'] = selected;
+                          staffDepartment = widget.departments[index]['department'];
+                        });
+                      },
+                    ),
+                  );
+                },),
+              ),
+            ),
+
+
+            //manager switch
+            SwitchListTile(
+              title: const Text('Manager'),
+              selected: widget.isManager,
+              value: widget.isManager,
+              activeColor: Theme.of(context).primaryColorDark,
+              inactiveThumbColor: Theme.of(context).primaryColorLight,
+              secondary: const Icon(Icons.account_circle_outlined),
+
+              onChanged: (bool value){
+                setState(() {
+                  widget.isManager = value;
+                });
+              },
+            ),
+
+            //button
+            Padding(
+              padding: const EdgeInsets.all(30.0),
+              child: SizedBox(
+                width: double.infinity,
+                child: OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                    primary: Theme.of(context).primaryColorLight,
+                  ),
+
+                  child: const Padding(
+                    padding: EdgeInsets.all(10.0),
+                    child: Text('Create User'),
+                  ),
+
+                  onPressed: () async {
+                    if(_addAccountKey.currentState!.validate()){
+                      setState(() {
+                        _newUserName = _nameController.text;
+                        _newUserEmail = _emailController.text;
+                        _newUserPassword = _passwordController.text;
+                      });
+
+                      String msg = await _auth.createUser(
+                        ctx: context,
+                        email: _newUserEmail,
+                        password: _newUserPassword,
+                        name: _newUserName,
+                        isManager: widget.isManager,
+                        department: staffDepartment,
+                      );
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          duration: const Duration(seconds: 2),
+                          content: Text(msg),
+                          behavior: SnackBarBehavior.floating,
+                        ),
+                      );
+
+                      _nameController.clear();
+                      _emailController.clear();
+                      _passwordController.clear();
+                      Navigator.of(context).pop();
+                    }
+                  },
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+

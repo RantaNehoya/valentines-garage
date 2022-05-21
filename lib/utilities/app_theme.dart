@@ -15,10 +15,16 @@ class AppTheme{
 
   static final lightTheme = ThemeData(
     colorScheme: const ColorScheme.light(),
-    primaryColor: Colors.red,
-    primaryColorLight: const Color(0xFFFF7961),
-    primaryColorDark: const Color(0xFFF44336),
+    primaryColor: const Color(0xFFFFBC80),
+    primaryColorLight: const Color(0xFFFFBC80),
+    primaryColorDark: const Color(0xFFF76E11),
+
     scaffoldBackgroundColor: Colors.white,
+    buttonTheme: const ButtonThemeData(
+      colorScheme: ColorScheme.light(),
+      buttonColor: Color(0xFFFF9F45),
+    ),
+    // navigationBarTheme: ,
 
     iconTheme: const IconThemeData(
       color: Colors.black,

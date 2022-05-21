@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
-
 import 'package:open_file/open_file.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:path_provider/path_provider.dart';
 
-import 'package:valentines_garage/test_screen.dart';
 
 import '../screens/valentine/valentine_homepage.dart';
 
@@ -20,7 +18,7 @@ class GenerateReport extends StatelessWidget {
         child: ElevatedButton(
           child: Text('Create PDF'),
           onPressed: (){
-            createPDF(ctx: context, tasks: Tiles.tasks);
+            createPDF(ctx: context);
           },
         ),
       ),
@@ -29,7 +27,7 @@ class GenerateReport extends StatelessWidget {
 }
 
 //generate pdf file
-Future<void> createPDF ({required BuildContext ctx, required List tasks}) async {
+Future<void> createPDF ({required BuildContext ctx}) async {
 
   final pdf = pw.Document();
 
