@@ -4,8 +4,8 @@ import 'package:valentines_garage/screens/valentine/valentine_page_navigation.da
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:open_file/open_file.dart';
-import 'package:valentines_garage/screens/data/task_data.dart';
-import 'package:valentines_garage/screens/data/task_view.dart';
+import 'package:valentines_garage/utilities/data/task_data.dart';
+import 'package:valentines_garage/utilities/data/task_view.dart';
 
 class editTask extends StatefulWidget {
   @override

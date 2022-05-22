@@ -3,7 +3,8 @@ import 'package:flutter/services.dart';
 
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:valentines_garage/screens/data/task_view.dart';
+import 'package:valentines_garage/screens/employees/employee_page_navigation.dart';
+import 'package:valentines_garage/utilities/data/task_view.dart';
 
 import 'package:valentines_garage/screens/login_screen.dart';
 import 'package:valentines_garage/screens/managers/manager_navigation.dart';
@@ -54,7 +55,7 @@ class _MyAppState extends State<MyApp> {
 
           initialRoute: '/',
           routes: {
-            '/': (context) => StaffCard(),
+            '/': (context) => ValentinePageNavigation(),
             '/secondPage': (context) => SecondPage(),
           },
         );

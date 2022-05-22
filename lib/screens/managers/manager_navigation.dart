@@ -46,6 +46,7 @@ class _ManagerPageNavigationState extends State<ManagerPageNavigation> {
           openNewTask();
         },
       ),
+
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: AnimatedBottomNavigationBar(
         backgroundColor: Theme.of(context).primaryColorDark,

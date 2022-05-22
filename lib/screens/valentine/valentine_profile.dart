@@ -3,9 +3,9 @@ import 'dart:io';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:valentines_garage/widgets/change_theme_button.dart';
+import 'package:valentines_garage/widgets/staff.dart';
 import 'package:valentines_garage/widgets/widgets.dart';
 import 'package:valentines_garage/widgets/constants.dart';
 import 'package:valentines_garage/utilities/auth.dart';
@@ -21,36 +21,27 @@ class ValentineProfile extends StatefulWidget {
 
 class _ValentineProfileState extends State<ValentineProfile> {
 
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final Authentication _auth = Authentication();
 
   String _imagePath = '';
   String _name = '';
-  bool _isManager = false;
-
-
 
   //controllers
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _newPasswordController = TextEditingController();
 
   //keys
   final _changeNameKey = GlobalKey<FormState>();
 
   @override
   void initState() {
-    _loadImage();
-    _firebaseAuth.currentUser!.displayName.toString();
+    _auth.getDisplayName();
+    _name = _auth.getDisplayName();
     super.initState();
   }
 
-
-
   @override
   Widget build(BuildContext context) {
-    // _name = _firebaseAuth.currentUser!.displayName.toString();
+    _name = _auth.getDisplayName();
 
     return SafeArea(
       child: Scaffold(
@@ -90,9 +81,10 @@ class _ValentineProfileState extends State<ValentineProfile> {
                   position: 'Chief Executive Officer',
                 ),
 
+                //name
                 profileName: profileName(
                   ctx: context,
-                  name: _firebaseAuth.currentUser!.displayName.toString(),
+                  name: _name,
                 ),
               ),
 
@@ -110,24 +102,17 @@ class _ValentineProfileState extends State<ValentineProfile> {
                 ),
                 child: Form(
                   key: _changeNameKey,
-                  child: TextFormField(
-                    autofocus: true,
+                  child: textFormInput(
+                    ctx: context,
+                    label: 'User Name',
                     controller: _nameController,
-                    textInputAction: TextInputAction.done,
-                    validator: (input){
-                      if(input == null || input.isEmpty) {
-                        return 'Cannot leave field empty';
-                      }
-                      return null;
-                    },
-                    decoration: const InputDecoration(
-                      labelText: 'User Name',
-                    ),
+                    autofcs: true,
+                    keyboard: TextInputType.name,
 
-                    onFieldSubmitted: (_){
+                    onSub: (_){
                       if(_changeNameKey.currentState!.validate()){
                         setState(() {
-                          _firebaseAuth.currentUser!.updateDisplayName(_nameController.text);
+                          _auth.updateDisplayName(_nameController.text);
                           _nameController.clear();
                           Navigator.of(context).pop();
                         });
@@ -156,14 +141,24 @@ class _ValentineProfileState extends State<ValentineProfile> {
                           _auth.changePassword();
                           Navigator.of(context).pop();
                         },
-                        child: const Text('Yes'),
+                        child: Text(
+                          'Yes',
+                          style: TextStyle(
+                            color: Theme.of(context).primaryColorDark,
+                          ),
+                        ),
                       ),
 
                       OutlinedButton(
                         onPressed: (){
                           Navigator.of(context).pop();
                         },
-                        child: const Text('No, Thanks'),
+                        child: Text(
+                          'No, Thanks',
+                          style: TextStyle(
+                            color: Theme.of(context).primaryColorDark,
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -175,7 +170,10 @@ class _ValentineProfileState extends State<ValentineProfile> {
               settingPageManagement(
                 ctx: context,
                 ftn: 'Log out',
-                child: const Text('Do you wish to log out?'),
+                child: const Text(
+                  'Do you wish to log out?',
+                  textAlign: TextAlign.center,
+                ),
                 actions: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -185,21 +183,32 @@ class _ValentineProfileState extends State<ValentineProfile> {
                           _auth.logOut();
 
                           //navigate to login screen
+                          Navigator.of(context).pop();
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => LoginScreen(),
+                              builder: (context) => const LoginScreen(),
                             ),
                           );
                         },
-                        child: const Text('Yes'),
+                        child: Text(
+                          'Yes',
+                          style: TextStyle(
+                            color: Theme.of(context).primaryColorDark,
+                          ),
+                        ),
                       ),
 
                       OutlinedButton(
                         onPressed: (){
                           Navigator.of(context).pop();
                         },
-                        child: const Text('No'),
+                        child: Text(
+                          'No',
+                          style: TextStyle(
+                            color: Theme.of(context).primaryColorDark,
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -247,10 +256,8 @@ class _ValentineProfileState extends State<ValentineProfile> {
                   showDialog(
                     context: context,
                     builder: (context){
-                      return SingleChildScrollView(
-                        child: AccountDialog(
-                          isManager: _isManager,
-                        ),
+                      return const SingleChildScrollView(
+                        child: AccountDialog(),
                       );
                     },
                   );
@@ -277,15 +284,12 @@ class _ValentineProfileState extends State<ValentineProfile> {
                   ),
                 ),
                 onTap: (){
-                  showDialog(
-                    context: context,
-                    builder: (context){
-                      return SingleChildScrollView(
-                        child: AccountDialog(
-                          isManager: _isManager,
-                        ),
-                      );
-                    },
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: ((context){
+                        return const ValentineViewStaff();
+                      }),
+                    ),
                   );
                 },
               ),
@@ -384,32 +388,17 @@ class _ValentineProfileState extends State<ValentineProfile> {
   }
 
   //load image on app startup
-  void _loadImage() async {
-    SharedPreferences saveImage = await SharedPreferences.getInstance();
-
-    setState(() {
-      _imagePath = saveImage.getString("imgPath") as String;
-    });
-  }
+  // void _loadImage() async {
+  //   SharedPreferences saveImage = await SharedPreferences.getInstance();
+  //
+  //   setState(() {
+  //     _imagePath = saveImage.getString("imgPath") as String;
+  //   });
+  // }
 }
 
 class AccountDialog extends StatefulWidget {
-  AccountDialog({Key? key, required this.isManager}) : super(key: key);
-  bool isManager;
-  List<Map<String, dynamic>> departments = [
-    {
-      'department': 'Electrical',
-      'isSelected': false,
-    },
-    {
-      'department': 'Mechanical',
-      'isSelected': false,
-    },
-    {
-      'department': 'SumnElse',
-      'isSelected': false
-    },
-  ];
+  const AccountDialog({Key? key}) : super(key: key);
 
   @override
   State<AccountDialog> createState() => _AccountDialogState();
@@ -421,15 +410,29 @@ class _AccountDialogState extends State<AccountDialog> {
   final _addAccountKey = GlobalKey<FormState>();
 
   //auth
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final Authentication _auth = Authentication();
+
+  List<Map<String, dynamic>> departments = [
+    {
+      'department': 'Electrical',
+      'isSelected': false,
+    },
+    {
+      'department': 'Mechanical',
+      'isSelected': false,
+    },
+    {
+      'department': 'Trailer',
+      'isSelected': false
+    },
+  ];
+  //new user
   String _newUserName = '';
   String _newUserEmail = '';
   String _newUserPassword = '';
-
-
-
   String staffDepartment = '';
+  bool _isObscure = true;
+  bool isManager = false;
 
   //controllers
   final TextEditingController _emailController = TextEditingController();
@@ -437,14 +440,9 @@ class _AccountDialogState extends State<AccountDialog> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _newPasswordController = TextEditingController();
 
-  bool _isObscure = true;
-  bool _isSelected = false;
-
   //focus nodes
   final FocusNode _emailFocusNode = FocusNode();
   final FocusNode _passwordFocusNode = FocusNode();
-  final FocusNode _nameFocusNode = FocusNode();
-
 
   @override
   void dispose() {
@@ -498,7 +496,6 @@ class _AccountDialogState extends State<AccountDialog> {
               },
             ),
 
-
             TextFormField(
               cursorColor: Theme.of(context).primaryColorDark,
               controller: _passwordController,
@@ -544,27 +541,28 @@ class _AccountDialogState extends State<AccountDialog> {
               },
             ),
 
+            //department chips
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
 
               child: Row(
                 children: List.generate(
-                  widget.departments.length, (index){
+                  departments.length, (index){
                   return Padding(
                     padding: const EdgeInsets.all(5.0),
                     child: ChoiceChip(
-                      label: Text('${widget.departments[index]['department']}'),
-                      selected: widget.departments[index]['isSelected'],
+                      label: Text('${departments[index]['department']}'),
+                      selected: departments[index]['isSelected'],
                       backgroundColor: Theme.of(context).primaryColorLight,
                       selectedColor: Theme.of(context).primaryColorDark,
 
                       onSelected: (selected){
                         setState(() {
-                          for (int i=0; i<widget.departments.length; i++){
-                            widget.departments[i]['isSelected'] = false;
+                          for (int i=0; i<departments.length; i++){
+                            departments[i]['isSelected'] = false;
                           }
-                          widget.departments[index]['isSelected'] = selected;
-                          staffDepartment = widget.departments[index]['department'];
+                          departments[index]['isSelected'] = selected;
+                          staffDepartment = departments[index]['department'];
                         });
                       },
                     ),
@@ -573,19 +571,18 @@ class _AccountDialogState extends State<AccountDialog> {
               ),
             ),
 
-
             //manager switch
             SwitchListTile(
               title: const Text('Manager'),
-              selected: widget.isManager,
-              value: widget.isManager,
+              selected: isManager,
+              value: isManager,
               activeColor: Theme.of(context).primaryColorDark,
               inactiveThumbColor: Theme.of(context).primaryColorLight,
               secondary: const Icon(Icons.account_circle_outlined),
 
               onChanged: (bool value){
                 setState(() {
-                  widget.isManager = value;
+                  isManager = value;
                 });
               },
             ),
@@ -606,6 +603,7 @@ class _AccountDialogState extends State<AccountDialog> {
                   ),
 
                   onPressed: () async {
+
                     if(_addAccountKey.currentState!.validate()){
                       setState(() {
                         _newUserName = _nameController.text;
@@ -618,7 +616,7 @@ class _AccountDialogState extends State<AccountDialog> {
                         email: _newUserEmail,
                         password: _newUserPassword,
                         name: _newUserName,
-                        isManager: widget.isManager,
+                        isManager: isManager,
                         department: staffDepartment,
                       );
 

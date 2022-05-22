@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:valentines_garage/screens/valentine/valentine_homepage.dart';
-import 'package:valentines_garage/screens/data/task_data.dart';
+import 'package:valentines_garage/utilities/data/task_data.dart';
 
 import '../../widgets/checklist.dart';
-import '../valentine/valentine_page_navigation.dart';
+import 'package:valentines_garage/screens/valentine/valentine_page_navigation.dart';
 
 class SecondPage extends StatelessWidget {
   const SecondPage({Key? key}) : super(key: key);

@@ -3,10 +3,14 @@ import 'package:flutter/material.dart';
 class AppTheme{
   static final darkTheme = ThemeData(
     colorScheme: const ColorScheme.dark(),
-    primaryColor: Colors.orange,
-    primaryColorLight: const Color(0xFF867365),
-    primaryColorDark: const Color(0xFF8F7034),
-    scaffoldBackgroundColor: const Color(0xFF15202B),
+    primaryColor: const Color(0xFFA13333),
+    primaryColorLight: const Color(0xFFA13333),
+    primaryColorDark: const Color(0xFF461111),
+    scaffoldBackgroundColor: const Color(0xFF040303),
+    buttonTheme: const ButtonThemeData(
+      colorScheme: ColorScheme.light(),
+      buttonColor: Color(0xFFB3541E),
+    ),
 
     iconTheme: const IconThemeData(
       color: Colors.white,

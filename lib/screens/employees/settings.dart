@@ -21,7 +21,7 @@ class _SettingsState extends State<Settings> {
 
   @override
   void initState() {
-    _loadImage();
+
     _name = _auth.getDisplayName();
     super.initState();
   }
@@ -42,7 +42,6 @@ class _SettingsState extends State<Settings> {
   final TextEditingController _newPasswordController = TextEditingController();
 
   //focus nodes
-  final FocusNode _emailFocusNode = FocusNode();
   final FocusNode _passwordFocusNode = FocusNode();
 
   @override
@@ -54,14 +53,13 @@ class _SettingsState extends State<Settings> {
     _newPasswordController.dispose();
 
     //dispose focus nodes
-    _emailFocusNode.dispose();
     _passwordFocusNode.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-
+    _name = _auth.getDisplayName();
 
     return SafeArea(
       child: Scaffold(
@@ -77,11 +75,10 @@ class _SettingsState extends State<Settings> {
                   child: const ChangeThemeButtonIcon(),
                 ),
 
-                //todo: picture
                 //profile avatar
                 avatarPicture: profileAvatar(
                   ctx: context,
-                  avatar: _auth.getProfilePicture().isEmpty ? const AssetImage('assets/images/unknown.png') : FileImage(File(_auth.getProfilePicture())) as ImageProvider,
+                  avatar:_auth.getProfilePicture().isEmpty ? const AssetImage('assets/images/unknown.png') : FileImage(File(_auth.getProfilePicture())) as ImageProvider,
                   gallerySheetButton: imageButton(
                     ctx: context,
                     icon: Icons.photo,
@@ -112,7 +109,6 @@ class _SettingsState extends State<Settings> {
                 height: MediaQuery.of(context).size.height * 0.02,
               ),
 
-              //todo: name
               //change name
               settingPageManagement(
                 ctx: context,
@@ -123,33 +119,20 @@ class _SettingsState extends State<Settings> {
                 ),
                 child: Form(
                   key: _changeNameKey,
-                  child: TextFormField(
-                    autofocus: true,
+                  child: textFormInput(
+                    ctx: context,
+                    label: 'User Name',
                     controller: _nameController,
-                    textInputAction: TextInputAction.done,
-                    validator: (input){
-                      if(input == null || input.isEmpty) {
-                        return 'Cannot leave field empty';
-                      }
-                      return null;
-                    },
-                    decoration: const InputDecoration(
-                      labelText: 'User Name',
-                    ),
+                    autofcs: true,
+                    keyboard: TextInputType.name,
 
-                    onFieldSubmitted: (_){
+                    onSub: (_){
                       if(_changeNameKey.currentState!.validate()){
-                        _auth.updateDisplayName(_nameController.text);
-                        _nameController.clear();
                         setState(() {
-                          _name = _auth.getDisplayName();
-                          print('''
-                          **********************************************
-                          $_name
-                          **********************************************
-                          ''');
+                          _auth.updateDisplayName(_nameController.text);
+                          _nameController.clear();
+                          Navigator.of(context).pop();
                         });
-                        Navigator.of(context).pop();
                       }
                     },
                   ),
@@ -167,21 +150,14 @@ class _SettingsState extends State<Settings> {
                 ),
                 child: Form(
                   key: _changeEmailKey,
-                  child: TextFormField(
-                    autofocus: true,
+                  child: textFormInput(
+                    ctx: context,
+                    label: 'New Email',
                     controller: _emailController,
-                    textInputAction: TextInputAction.done,
-                    validator: (input){
-                      if(input == null || input.isEmpty) {
-                        return 'Cannot leave field empty';
-                      }
-                      return null;
-                    },
-                    decoration: const InputDecoration(
-                      labelText: 'New Email',
-                    ),
+                    autofcs: true,
+                    keyboard: TextInputType.emailAddress,
 
-                    onFieldSubmitted: (_){
+                    onSub: (_){
                       if(_changeEmailKey.currentState!.validate()){
                         _auth.updateEmailAddress(_emailController.text);
                         _emailController.clear();
@@ -211,14 +187,24 @@ class _SettingsState extends State<Settings> {
                           _auth.changePassword();
                           Navigator.of(context).pop();
                         },
-                        child: const Text('Yes'),
+                        child: Text(
+                          'Yes',
+                          style: TextStyle(
+                            color: Theme.of(context).primaryColorDark,
+                          ),
+                        ),
                       ),
 
                       OutlinedButton(
                         onPressed: (){
                           Navigator.of(context).pop();
                         },
-                        child: const Text('No, Thanks'),
+                        child: Text(
+                          'No, Thanks',
+                          style: TextStyle(
+                            color: Theme.of(context).primaryColorDark,
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -230,7 +216,10 @@ class _SettingsState extends State<Settings> {
               settingPageManagement(
                 ctx: context,
                 ftn: 'Log out',
-                child: const Text('Do you wish to log out?'),
+                child: const Text(
+                  'Do you wish to log out?',
+                  textAlign: TextAlign.center,
+                ),
                 actions: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -240,21 +229,32 @@ class _SettingsState extends State<Settings> {
                           _auth.logOut();
 
                           //navigate to login screen
+                          Navigator.of(context).pop();
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => LoginScreen(),
+                              builder: (context) => const LoginScreen(),
                             ),
                           );
                         },
-                        child: const Text('Yes'),
+                        child: Text(
+                          'Yes',
+                          style: TextStyle(
+                            color: Theme.of(context).primaryColorDark,
+                          ),
+                        ),
                       ),
 
                       OutlinedButton(
                         onPressed: (){
                           Navigator.of(context).pop();
                         },
-                        child: const Text('No'),
+                        child: Text(
+                          'No',
+                          style: TextStyle(
+                            color: Theme.of(context).primaryColorDark,
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -299,21 +299,32 @@ class _SettingsState extends State<Settings> {
                           _auth.deleteAccount();
 
                           //navigate to login screen
+                          Navigator.of(context).pop();
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => LoginScreen(),
+                              builder: (context) => const LoginScreen(),
                             ),
                           );
                         },
-                        child: const Text('Yes'),
+                        child: Text(
+                          'Yes',
+                          style: TextStyle(
+                            color: Theme.of(context).primaryColorDark,
+                          ),
+                        ),
                       ),
 
                       OutlinedButton(
                         onPressed: (){
                           Navigator.of(context).pop();
                         },
-                        child: const Text('No, Thanks'),
+                        child: Text(
+                          'No, Thanks',
+                          style: TextStyle(
+                            color: Theme.of(context).primaryColorDark,
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -390,11 +401,12 @@ class _SettingsState extends State<Settings> {
   }
 
   //load image on app startup
-  void _loadImage() async {
-    SharedPreferences saveImage = await SharedPreferences.getInstance();
-
-    setState(() {
-      _imagePath = saveImage.getString("imgPath") as String;
-    });
-  }
+  // void _loadImage() async {
+  //   SharedPreferences saveImage = await SharedPreferences.getInstance();
+  //
+  //   setState(() {
+  //     _imagePath = saveImage.getString("imgPath") as String;
+  //     debugPrint('PATH - $_imagePath');
+  //   });
+  // }
 }

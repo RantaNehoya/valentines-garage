@@ -46,12 +46,11 @@ class _ManagerHomeState extends State<ManagerHome> {
               AppBar(
                 backgroundColor: Theme.of(context).primaryColorDark,
                 elevation: 0,
-                title: Center(
-                  child: Text(
-                    "Work List",
-                    style: TextStyle(fontSize: 25),
-                  ),
+                title: Text(
+                  "Work List",
+                  style: TextStyle(fontSize: 25),
                 ),
+                centerTitle: true,
               ),
               Container(
                 height: 70,

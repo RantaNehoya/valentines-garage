@@ -60,7 +60,7 @@ GestureDetector profileAvatar({required BuildContext ctx, required ImageProvider
 }
 
 //profile name
-Positioned profileName({required String name, required BuildContext ctx}){
+Positioned profileName({required String name, required BuildContext ctx}) {
   return Positioned(
     bottom: 10.0,
     child: SizedBox(

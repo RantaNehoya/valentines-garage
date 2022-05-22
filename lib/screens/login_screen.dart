@@ -5,27 +5,27 @@ import 'package:flutter_login/flutter_login.dart';
 
 import 'package:valentines_garage/screens/valentine/valentine_page_navigation.dart';
 import 'package:valentines_garage/screens/employees/employee_page_navigation.dart';
+import 'package:valentines_garage/screens/managers/manager_navigation.dart';
+import 'package:valentines_garage/widgets/staff.dart';
 
-import 'managers/manager_navigation.dart';
 
 
-class LoginScreen extends StatelessWidget {
-  LoginScreen({Key? key}) : super(key: key);
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({Key? key}) : super(key: key);
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  Staff staff = Staff();
+  List managers = [];
 
   Duration get loginTime => const Duration(milliseconds: 2250);
+
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+
   final _valentineUID = 'zXs0A1f7GjXNdoZg0sVBK0blobF2';
-  final _managerUID = <String>[
-    'WbOuvz7js0TGl0pBmm3vOW0UB9E2',
-    'CfYdglZO6fc1OBqGsHIUzOCi5Kk1',
-  ];
-
-
-
-  //valentine123
-  //sun123
-  //joha123
-  //john123
 
   //user auth sign in
   Future<String?> _authUser(LoginData data) async {
@@ -51,20 +51,13 @@ class LoginScreen extends StatelessWidget {
   }
 
   //user auth sign up
-  // Future<String?> _signupUser(SignupData data) {
-  //   debugPrint('Signup Name: ${data.name}, Password: ${data.password}');
-  //   return Future.delayed(loginTime).then((_) {
-  //     return null;
-  //   });
-  // }
-
-  //user uid
   String _userUID (){
     User? user = _firebaseAuth.currentUser;
     String? uid = user?.uid;
     return uid as String;
   }
 
+  //recover password
   Future<String?> _recoverPassword(String name) async {
     try{
       await _firebaseAuth.sendPasswordResetEmail(
@@ -81,12 +74,24 @@ class LoginScreen extends StatelessWidget {
     return null;
   }
 
-  @override
-  Widget build(BuildContext context) {
+  //future builder
+  Widget userScreen (){
+    return FutureBuilder(
+      future: staff.getFromFB(),
 
-    return SafeArea(
-      child: Scaffold(
-        body: FlutterLogin(
+      builder: (context, AsyncSnapshot<List> snapshot){
+
+        List? snapshots = snapshot.data;
+
+        Future.delayed(Duration(seconds: 1)).then((_){
+          for(var snap in snapshots!){
+            if(snap['isManager'] == true){
+              managers.add(snap['uid']);
+            }
+          }
+        });
+
+        return FlutterLogin(
           title: 'Valentine\'s\nGarage',
           logo: const AssetImage('assets/images/mechanic.png'),
           navigateBackAfterRecovery: true,
@@ -118,11 +123,12 @@ class LoginScreen extends StatelessWidget {
               MaterialPageRoute(
                 //if valentine send to manager page else employee page
                 builder: (context) {
+                  // for
                   if (_userUID() == _valentineUID){
                     return const ValentinePageNavigation();
                   }
 
-                  else if (_managerUID.contains(_userUID())){
+                  else if (managers.contains(_userUID())){
                     return const ManagerPageNavigation();
                   }
 
@@ -134,7 +140,22 @@ class LoginScreen extends StatelessWidget {
             );
           },
           onRecoverPassword: _recoverPassword,
-        ),
+        );
+      },
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+    return SafeArea(
+      child: Scaffold(
+        body: userScreen(),
       ),
     );
   }
