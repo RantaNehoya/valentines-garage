@@ -10,6 +10,7 @@ import 'package:valentines_garage/screens/managers/manager_navigation.dart';
 import 'package:valentines_garage/screens/valentine/valentine_page_navigation.dart';
 import 'package:valentines_garage/utilities/app_theme.dart';
 import 'package:valentines_garage/utilities/pdf_report.dart';
+import 'package:valentines_garage/widgets/staff.dart';
 
 
 void main() async {
@@ -53,7 +54,7 @@ class _MyAppState extends State<MyApp> {
 
           initialRoute: '/',
           routes: {
-            '/': (context) => LoginScreen(),
+            '/': (context) => StaffCard(),
             '/secondPage': (context) => SecondPage(),
           },
         );
