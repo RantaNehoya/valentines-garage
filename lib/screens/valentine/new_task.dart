@@ -6,6 +6,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:open_file/open_file.dart';
 import 'package:valentines_garage/utilities/data/task_data.dart';
 import 'package:valentines_garage/utilities/data/task_view.dart';
+import 'assign_employees.dart';
 
 class newTask extends StatefulWidget {
   @override
@@ -183,10 +184,27 @@ class newTaskState extends State<newTask> {
                               SizedBox(
                                 height: 20,
                               ),
-                              // Text(
-                              //   "Add Member",
-                              //   style: TextStyle(fontSize: 18),
-                              // ),
+                              Text(
+                                "Add Member",
+                                style: TextStyle(fontSize: 18),
+                              ),
+                              Container(
+                                padding: EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20)),
+                                  color: Colors.grey.withOpacity(0.2),
+                                ),
+                                child: TextButton(
+                                  onPressed: () {
+                                    assignEmployee();
+                                  },
+                                  child: Text(
+                                    'Assign Employees',
+                                    style: TextStyle(color: Color(0xfff96060)),
+                                  ),
+                                ),
+                              ),
                               SizedBox(
                                 height: 15,
                               ),
@@ -329,5 +347,9 @@ class newTaskState extends State<newTask> {
   backHome() {
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => ValentinePageNavigation()));
+  }
+  assignEmployee() {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => AssignEmployee()));
   }
 }
