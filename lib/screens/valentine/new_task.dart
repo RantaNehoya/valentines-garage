@@ -51,8 +51,8 @@ class newTaskState extends State<newTask> {
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 30),
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(7)),
-                    color: Theme.of(context).scaffoldBackgroundColor,),
+                  borderRadius: BorderRadius.all(Radius.circular(7)),
+                  color: Theme.of(context).scaffoldBackgroundColor,),
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height * 0.85,
                 child: SingleChildScrollView(

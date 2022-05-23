@@ -7,6 +7,7 @@ import '../valentine/new_task.dart';
 
 class ManagerHome extends StatefulWidget {
   const ManagerHome({Key? key}) : super(key: key);
+  static List task_list = [];
 
   @override
   State<ManagerHome> createState() => _ManagerHomeState();
