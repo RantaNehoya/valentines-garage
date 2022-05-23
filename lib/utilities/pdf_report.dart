@@ -1,39 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:io';
+
 import 'package:open_file/open_file.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:path_provider/path_provider.dart';
 
-
-class GenerateReport extends StatelessWidget {
-  GenerateReport({Key? key}) : super(key: key);
-
-  final List t = [
-    1,2,3,4,5,6,7,8,
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: ElevatedButton(
-          child: Text('Create PDF'),
-          onPressed: (){
-            createPDF(ctx: context, tasks: t);
-          },
-        ),
-      ),
-    );
-  }
-}
-
 //generate pdf file
-//todo
-Future<void> createPDF ({required BuildContext ctx, List? tasks}) async {
+Future<void> createPDF ({required BuildContext ctx, required List tasks}) async {
 
-  final List? lOfTasks = tasks;
+  final List lOfTasks = tasks;
 
   final pdf = pw.Document();
 
@@ -94,11 +71,36 @@ Future<void> createPDF ({required BuildContext ctx, List? tasks}) async {
                     mainAxisAlignment: pw.MainAxisAlignment.spaceAround,
                     children: [
                       //todo: bold
-                      pw.Text('1'),
-                      pw.Text('2'),
-                      pw.Text('3'),
-                      pw.Text('4'),
-                      pw.Text('5'),
+                      pw.Text('Title',
+                        style: pw.TextStyle(
+                          fontWeight: pw.FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                      pw.Text('Date',
+                        style: pw.TextStyle(
+                          fontWeight: pw.FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                      pw.Text('Description',
+                        style: pw.TextStyle(
+                          fontWeight: pw.FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                      pw.Text('Priority',
+                        style: pw.TextStyle(
+                          fontWeight: pw.FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                      pw.Text('Assigned',
+                        style: pw.TextStyle(
+                          fontWeight: pw.FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -106,7 +108,7 @@ Future<void> createPDF ({required BuildContext ctx, List? tasks}) async {
                 //todo
                 pw.ListView(
                   children: List.generate(
-                    lOfTasks!.length, (index){
+                    lOfTasks.length, (index){
                     return pw.Container(
                       child: pw.Padding(
                         padding: const pw.EdgeInsets.all(15.0),
@@ -114,11 +116,11 @@ Future<void> createPDF ({required BuildContext ctx, List? tasks}) async {
                           mainAxisAlignment: pw.MainAxisAlignment.spaceAround,
 
                           children: [
-                            pw.Text('11'),
-                            pw.Text('22'),
-                            pw.Text('33'),
-                            pw.Text('44'),
-                            pw.Text('55'),
+                            pw.Text(lOfTasks[index]['title']),
+                            pw.Text(lOfTasks[index]['date']),
+                            pw.Text(lOfTasks[index]['description']),
+                            pw.Text(lOfTasks[index]['priority']),
+                            pw.Text(lOfTasks[index]['assigned']),
                           ],
                         ),
                       ),

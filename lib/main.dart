@@ -55,7 +55,7 @@ class _MyAppState extends State<MyApp> {
 
           initialRoute: '/',
           routes: {
-            '/': (context) => GenerateReport(),
+            '/': (context) => const LoginScreen(),
             '/secondPage': (context) => SecondPage(),
           },
         );

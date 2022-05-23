@@ -16,18 +16,20 @@ class newTask extends StatefulWidget {
 }
 
 class newTaskState extends State<newTask> {
-  final data = TaskData("", "", "", "");
+  final data = TaskData("", "", "", "", []);
   final titleController = TextEditingController();
   final descController = TextEditingController();
 
-  final format = DateFormat('yyyy-mm-dd hh:mm');
+  assignPage aP = assignPage();
+
+  final format = DateFormat.MMMEd();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: Theme.of(context).primaryColorDark,
         elevation: 0,
         title: const Text(
           "New Task",
@@ -35,7 +37,7 @@ class newTaskState extends State<newTask> {
         ),
         leading: IconButton(
           onPressed: () {
-            backHome();
+            Navigator.of(context).pop();
           },
           icon: const Icon(Icons.arrow_back, color: Colors.white),
         ),
@@ -66,6 +68,28 @@ class newTaskState extends State<newTask> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              Container(
+                                padding: EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  borderRadius:
+                                  BorderRadius.all(Radius.circular(20)),
+                                  color: Colors.grey.withOpacity(0.2),
+                                ),
+                                child: TextButton(
+                                  onPressed: () {
+                                    assignEmployee();
+                                  },
+                                  child: Text(
+                                    'Assign Employees',
+                                    style: TextStyle(color: Color(0xfff96060)),
+                                  ),
+                                ),
+                              ),
+
+                              SizedBox(
+                                height: MediaQuery.of(context).size.height * 0.02,
+                              ),
+
                               TextFormField(
                                   controller: titleController,
                                   decoration: InputDecoration(
@@ -184,27 +208,7 @@ class newTaskState extends State<newTask> {
                               SizedBox(
                                 height: 20,
                               ),
-                              Text(
-                                "Add Member",
-                                style: TextStyle(fontSize: 18),
-                              ),
-                              Container(
-                                padding: EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(20)),
-                                  color: Colors.grey.withOpacity(0.2),
-                                ),
-                                child: TextButton(
-                                  onPressed: () {
-                                    assignEmployee();
-                                  },
-                                  child: Text(
-                                    'Assign Employees',
-                                    style: TextStyle(color: Color(0xfff96060)),
-                                  ),
-                                ),
-                              ),
+
                               SizedBox(
                                 height: 15,
                               ),
@@ -291,7 +295,7 @@ class newTaskState extends State<newTask> {
                           borderRadius: BorderRadius.all(
                             Radius.circular(15),
                           ),
-                          color: Theme.of(context).primaryColor,
+                          color: Theme.of(context).primaryColorDark,
                         ),
                         child: TextButton(
                           child: Text('Add Task'),
@@ -302,6 +306,8 @@ class newTaskState extends State<newTask> {
                           onPressed: () {
                             titleController.clear();
                             descController.clear();
+
+                            Navigator.of(context).pop();
                             Navigator.of(context).pushNamed(
                               '/secondPage',
                               arguments: {
@@ -309,6 +315,7 @@ class newTaskState extends State<newTask> {
                                 'desc': data.description,
                                 'date': data.date,
                                 'priority': data.priority,
+                                'assigned': data.assigned
                               },
                             );
                           },
@@ -350,6 +357,7 @@ class newTaskState extends State<newTask> {
   }
   assignEmployee() {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => AssignEmployee()));
+      context, MaterialPageRoute(builder: (context) => assignPage(),),
+    );
   }
 }

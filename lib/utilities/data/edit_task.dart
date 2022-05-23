@@ -16,7 +16,7 @@ class editTask extends StatefulWidget {
 
 class editTaskState extends State<editTask> {
   //at index of TaskData
-  final data = TaskData("", "", "", '');
+  final data = TaskData("", "", "", "", []);
   //at index of taskData
   final titleController = TextEditingController();
   final descController = TextEditingController();

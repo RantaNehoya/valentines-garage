@@ -6,12 +6,13 @@ import '../screens/valentine/new_task.dart';
 
 class Checklist extends StatelessWidget {
   Checklist(
-      {Key? key, Color? color, required this.title, required this.description, required this.date, required this.priority,});
+      {Key? key, Color? color, required this.title, required this.description, required this.date, required this.priority, required List this.assigned});
   Color? color;
   String title;
   String description;
   String date;
   String priority;
+  List assigned;
 
   @override
   Widget build(BuildContext context) {
@@ -19,10 +20,12 @@ class Checklist extends StatelessWidget {
       actionPane: SlidableDrawerActionPane(),
       actionExtentRatio: 0.3,
       child: Container(
-          height: 80,
+          height: MediaQuery.of(context).size.height * 0.1,
+          width: MediaQuery.of(context).size.height * 0.7,
           margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           decoration: BoxDecoration(
-              color: Theme.of(context).primaryColorLight, boxShadow: [
+              color: Theme.of(context).primaryColorDark.withOpacity(0.1),
+              boxShadow: [
             BoxShadow(
                 color: Colors.black.withOpacity(0.03),
                 offset: Offset(0, 9),
@@ -39,7 +42,7 @@ class Checklist extends StatelessWidget {
                     color: Colors.white,
                     shape: BoxShape.circle,
                     border: Border.all(
-                        color: priority == 'Low' ? Colors.green : Colors.orange,
+                        color: Colors.black,
                         width: 4)),
               ),
               Column(
@@ -51,9 +54,17 @@ class Checklist extends StatelessWidget {
                     style: TextStyle(color: Colors.black, fontSize: 18),
                   ),
                   Text(
-                    date,
+                    description,
                     style: TextStyle(fontSize: 18),
                   ),
+                  Text(
+                    '$date - $priority',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                  // Text(
+                  //   assigned.toString(),
+                  //   style: TextStyle(fontSize: 18),
+                  // ),
                 ],
               ),
               Expanded(

@@ -54,7 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
   String _userUID (){
     User? user = _firebaseAuth.currentUser;
     String? uid = user?.uid;
-    return uid as String;
+    return uid.toString();
   }
 
   //recover password

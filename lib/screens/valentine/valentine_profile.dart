@@ -11,6 +11,7 @@ import 'package:valentines_garage/widgets/constants.dart';
 import 'package:valentines_garage/utilities/auth.dart';
 import 'package:valentines_garage/screens/login_screen.dart';
 import 'package:valentines_garage/utilities/pdf_report.dart';
+import 'package:valentines_garage/utilities/data/task_view.dart';
 
 class ValentineProfile extends StatefulWidget {
   const ValentineProfile({Key? key}) : super(key: key);
@@ -25,6 +26,8 @@ class _ValentineProfileState extends State<ValentineProfile> {
 
   String _imagePath = '';
   String _name = '';
+
+  SecondPage sP = SecondPage();
 
   //controllers
   final TextEditingController _nameController = TextEditingController();
@@ -314,7 +317,7 @@ class _ValentineProfileState extends State<ValentineProfile> {
                   ),
                 ),
                 onTap: () async {
-                  createPDF(ctx: context);
+                  createPDF(ctx: context, tasks: sP.t);
                 },
               ),
               kDivider,

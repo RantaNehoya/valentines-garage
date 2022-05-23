@@ -11,6 +11,7 @@ import 'package:valentines_garage/utilities/auth.dart';
 import 'package:valentines_garage/screens/login_screen.dart';
 import 'package:valentines_garage/utilities/pdf_report.dart';
 import 'package:valentines_garage/widgets/staff.dart';
+import 'package:valentines_garage/utilities/data/task_view.dart';
 
 class ManagerProfile extends StatefulWidget {
   const ManagerProfile({Key? key}) : super(key: key);
@@ -26,6 +27,8 @@ class _ManagerProfileState extends State<ManagerProfile> {
 
   String _imagePath = '';
   String _name = '';
+
+  SecondPage sP = SecondPage();
 
   //controllers
   final TextEditingController _nameController = TextEditingController();
@@ -323,7 +326,7 @@ class _ManagerProfileState extends State<ManagerProfile> {
                   ),
                 ),
                 onTap: () async {
-                  createPDF(ctx: context);
+                  createPDF(ctx: context, tasks: sP.t);
                 },
               ),
               kDivider,

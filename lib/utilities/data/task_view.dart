@@ -7,7 +7,9 @@ import '../../widgets/checklist.dart';
 import 'package:valentines_garage/screens/valentine/valentine_page_navigation.dart';
 
 class SecondPage extends StatelessWidget {
-  const SecondPage({Key? key}) : super(key: key);
+  SecondPage({Key? key}) : super(key: key);
+
+  List t = [];
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +17,7 @@ class SecondPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: Theme.of(context).primaryColorDark,
         title: Text("Task View"),
       ),
       body: Container(
@@ -50,8 +52,9 @@ class SecondPage extends StatelessWidget {
             SizedBox(
               height: 15,
             ),
-            // Text("Members: ${data.added_members}",
-            //     style: TextStyle(fontSize: 20)),
+            Text("Members: ${routeArgs['assigned']}",
+              style: TextStyle(fontSize: 20),
+            ),
             SizedBox(
               height: 15,
             ),
@@ -62,7 +65,7 @@ class SecondPage extends StatelessWidget {
                 borderRadius: BorderRadius.all(
                   Radius.circular(15),
                 ),
-                color: Theme.of(context).primaryColor,
+                color: Theme.of(context).primaryColorDark,
               ),
               child: TextButton(
                 child: Text('SAVE'),
@@ -80,10 +83,19 @@ class SecondPage extends StatelessWidget {
                       date: routeArgs['date'],
                       description: routeArgs['desc'],
                       priority: routeArgs['priority'],
+                      assigned: routeArgs['assigned'],
                     ),
                   );
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => ValentinePageNavigation()));
+
+                  t.add({
+                    'title': routeArgs['title'],
+                    'date': routeArgs['date'],
+                    'description': routeArgs['desc'],
+                    'priority': routeArgs['priority'],
+                    'assigned': routeArgs['assigned'],
+                  });
+
+                  Navigator.of(context).pop();
                 },
               ),
             ),
