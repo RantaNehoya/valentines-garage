@@ -55,7 +55,7 @@ class _MyAppState extends State<MyApp> {
 
           initialRoute: '/',
           routes: {
-            '/': (context) => ValentinePageNavigation(),
+            '/': (context) => GenerateReport(),
             '/secondPage': (context) => SecondPage(),
           },
         );
