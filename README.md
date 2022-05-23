@@ -11,3 +11,33 @@ Valentine owns a garage in Windhoek with 13 employees. On daily basis he has at 
 • Valentine should also be able to assign tasks on a job when he is away.
 
 • Generate reports of tasks done by individual employees on a daily or monthly basis.
+
+## Getting Started
+
+This project is a starting point for a Flutter application.
+
+To clone this project,
+open your terminal or cmd
+
+```
+cd folder/to/clone-into/
+```
+
+```
+git clone https://github.com/RantaNehoya/valentines-garage.git
+```
+
+Then
+locate the project on your system and open with android studio or Vscode or intellij IDE.
+
+To Run:
+```
+C:\path\to\project> flutter pub get
+
+```
+then run:
+
+```
+C:\path\to\project> flutter run
+
+```
